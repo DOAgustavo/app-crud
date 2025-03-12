@@ -1,0 +1,32 @@
+// ...existing code...
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Empresa {
+  id                Int                @id @default(autoincrement())
+  razaoSocial       String
+  cnpj              String
+  cep               String
+  cidade            String
+  estado            String
+  bairro            String
+  complemento       String?
+  licencasAmbientais LicencaAmbiental[] @relation("EmpresaLicencas")
+}
+
+model LicencaAmbiental {
+  id                Int       @id @default(autoincrement())
+  numero            String
+  orgaoAmbiental    String
+  emissao           DateTime
+  validade          DateTime
+  empresaId         Int
+  empresa           Empresa   @relation("EmpresaLicencas", fields: [empresaId], references: [id])
+}
