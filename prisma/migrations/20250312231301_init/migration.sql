@@ -11,12 +11,12 @@ CREATE TABLE "Empresa" (
 );
 
 -- CreateTable
-CREATE TABLE "LicencaAmbiental" (
+CREATE TABLE "Licenca" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "numero" TEXT NOT NULL,
     "orgaoAmbiental" TEXT NOT NULL,
     "emissao" DATETIME NOT NULL,
     "validade" DATETIME NOT NULL,
     "empresaId" INTEGER NOT NULL,
-    CONSTRAINT "LicencaAmbiental_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Licenca_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );

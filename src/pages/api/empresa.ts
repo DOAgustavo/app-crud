@@ -1,3 +1,4 @@
+// filepath: src/pages/api/empresa.ts
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 

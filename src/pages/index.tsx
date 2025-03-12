@@ -1,3 +1,4 @@
+// filepath: src/pages/index.tsx
 "use client";
 
 import { useEffect, useState } from 'react';

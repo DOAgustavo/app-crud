@@ -1,7 +1,15 @@
+// filepath: src/pages/empresa/cadastroEmpresa.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+interface Licenca {
+  id: number;
+  numero: string;
+  orgaoAmbiental: string;
+}
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function CadastroEmpresa() {
   const [form, setForm] = useState({
@@ -13,7 +21,26 @@ export default function CadastroEmpresa() {
     bairro: '',
     complemento: '',
   });
+  const [licencas, setLicencas] = useState<Licenca[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchLicencas() {
+      try {
+        const response = await fetch('/api/licenca');
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setLicencas(data);
+        } else {
+          console.error('Dados recebidos não são um array:', data);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar licenças:', error);
+      }
+    }
+
+    fetchLicencas();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -112,6 +139,17 @@ export default function CadastroEmpresa() {
           Salvar
         </button>
       </form>
+      <h2 className="text-xl font-bold mt-8">Licenças Ambientais</h2>
+      <ul className="mt-4">
+        {licencas.map((licenca) => (
+          <li key={licenca.id} className="border-b py-2">
+            {licenca.numero} - {licenca.orgaoAmbiental}
+          </li>
+        ))}
+      </ul>
+      <Link href="/empresa/cadastroLicenca" legacyBehavior>
+        <a className="bg-green-500 text-white px-4 py-2 rounded mt-4 inline-block">Adicionar Nova Licença</a>
+      </Link>
     </div>
   );
 }
