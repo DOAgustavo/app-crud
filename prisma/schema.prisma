@@ -8,16 +8,17 @@ generator client {
 }
 
 model Empresa {
-  id                Int                @id @default(autoincrement())
-  razaoSocial       String
-  cnpj              String
-  cep               String
-  cidade            String
-  estado            String
-  bairro            String
-  complemento       String?
-  licencas          Licenca[]          @relation("EmpresaLicencas")
+  id          Int       @id @default(autoincrement())
+  razaoSocial String
+  cnpj        String
+  cep         String
+  cidade      String
+  estado      String
+  bairro      String
+  complemento String?
+  licencas    Licenca[] // Adiciona o campo de relação oposto
 }
+
 
 model Licenca {
   id             Int      @id @default(autoincrement())
@@ -26,5 +27,5 @@ model Licenca {
   emissao        DateTime
   validade       DateTime
   empresaId      Int
-  empresa        Empresa  @relation(fields: [empresaId], references: [id], name: "EmpresaLicencas")
+  empresa        Empresa  @relation(fields: [empresaId], references: [id])
 }
