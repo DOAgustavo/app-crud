@@ -1,0 +1,91 @@
+Processo seletivo Desenvolvedor Full Stack NEXTJS
+
+Criamos este pequeno desafio para melhor conhecer as qualidades de cada um.
+
+Neste desafio será avaliado os conhecimentos em:
+
+Análise e modelagem de dados;
+
+Arquitetura de software;
+
+GIT;
+
+Conhecimento sobre Typescript e NEXTJS;
+
+Conhecimento sobre MYSQL e PRISMA;
+
+Padrões de projeto;
+
+Segurança;
+
+Objetivos
+
+Criar um CRUD simples, utilizando NextJS e um banco de dados MYSQL com PRISMA.js
+
+Requisitos
+
+Criar um modelo de dados para a representação das seguintes entidades Empresa e Licença;
+
+Utilizar um banco de dados MySQL;
+
+Implementar o Prisma.js para o acesso ao banco de dados;
+
+Criar as telas descritas no tópico “Telas”, possibilitando a criação, leitura, atualização e exclusão das entidades Empresa e Licença.
+
+A estética não será avaliada, porém a usabilidade da página sim, é permitido o uso de alguma biblioteca como Bootstrap ou tailwind para facilitar a organização dos componentes na página.
+
+Deverá utilizar NextJS;
+
+Publicar no github o código fonte da implementação;
+
+No código fonte deverá constar um arquivo Exclusive Software Deals for Developers and Startups - Dealsbe  com as seguintes informações:
+
+Orientações de instalação e execução do ambiente em localhost;
+
+Telas
+
+Home: lista contendo todas as empresas e um botão para criar uma nova empresa no topo da página;
+
+Cadastro de empresa:
+
+Campos necessários:
+
+Razão social (texto);
+
+CNPJ (texto);
+
+CEP (texto);
+
+Cidade (texto);
+
+Estado (texto);
+
+Bairro (texto);
+
+Complemento (texto);
+
+Abaixo dos campos, colocar uma lista de todas as licenças ambientais dessa empresa. E um botão para adicionar uma nova licença nessa empresa (esse botão direciona para o cadastro de licença).
+
+Cadastro de licenças ambientais:
+
+Campos necessários:
+
+Empresa (relacionando a um item da tabela de empresa, esse campo será um “select”);
+
+Número (texto livre, pode conter letras no número da licença);
+
+Órgão ambiental (texto);
+
+Emissão (data);
+
+Validade (data);
+
+Desejável
+
+Que as telas possuam responsividade e sejam compatíveis com resolução de dispositivos móveis;
+
+Finalização
+
+Verificar se todos os requisitos foram atendidos;
+
+Após pronto o desafio, compartilhar o repositório com o seguinte email: cunha@ambisis.com.br e gabriel.menezes@ambisis.com.br
