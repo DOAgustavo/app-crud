@@ -31,6 +31,20 @@ export default function CadastroEmpresa() {
   // Função para lidar com o envio do formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Verifica se todos os campos obrigatórios estão preenchidos
+    if (
+      !form.razaoSocial ||
+      !form.cnpj ||
+      !form.cep ||
+      !form.cidade ||
+      !form.estado ||
+      !form.bairro 
+    ) {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
     // Envia os dados do formulário para a API
     await fetch('/api/empresa', {
       method: 'POST',
@@ -39,6 +53,7 @@ export default function CadastroEmpresa() {
       },
       body: JSON.stringify(form),
     });
+
     // Redireciona para a página inicial após o envio
     router.push('/');
   };
@@ -154,6 +169,11 @@ export default function CadastroEmpresa() {
           </div>
           <div className="col-12">
             <button className="btn btn-primary" type="submit">Salvar</button>
+          </div>
+          <div className="col-12 mt-3">
+            <Link href="/" legacyBehavior>
+              <a className="btn btn-secondary w-1 text-center  ">Voltar para a Página Principal</a>
+            </Link>
           </div>
         </form>
         {/* Link para adicionar nova licença */}
