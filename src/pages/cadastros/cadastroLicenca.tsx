@@ -1,4 +1,3 @@
-// filepath: src/pages/empresa/cadastroLicenca.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -13,36 +12,58 @@ export default function CadastroLicenca() {
     validade: '',
     empresaId: '',
   });
-  const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [empresa, setEmpresa] = useState<Empresa | null>(null); // Dados da empresa vinculada
   const router = useRouter();
-  const { empresaId } = router.query; // Captura o empresaId da URL
+  const { empresaId, id: licencaId } = router.query; // Captura o ID da empresa e da licença da URL
 
   useEffect(() => {
     if (empresaId) {
       setForm((prevForm) => ({
         ...prevForm,
-        empresaId: empresaId as string, // Define o empresaId no formulário
+        empresaId: empresaId as string, // Define o ID da empresa no formulário
       }));
-    }
 
-    async function fetchEmpresas() {
-      try {
-        const response = await fetch('/api/empresa');
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setEmpresas(data);
-        } else {
-          console.error('Dados recebidos não são um array:', data);
+      const fetchEmpresa = async () => {
+        try {
+          const response = await fetch(`/api/empresa/${empresaId}`);
+          if (!response.ok) {
+            throw new Error('Erro ao buscar empresa');
+          }
+          const data = await response.json();
+          setEmpresa(data); // Armazena os dados da empresa vinculada
+        } catch (error) {
+          console.error('Erro ao buscar empresa:', error);
         }
-      } catch (error) {
-        console.error('Erro ao buscar empresas:', error);
-      }
+      };
+
+      fetchEmpresa();
     }
 
-    fetchEmpresas();
-  }, [empresaId]);
+    if (licencaId) {
+      const fetchLicenca = async () => {
+        try {
+          const response = await fetch(`/api/licenca/${licencaId}`);
+          if (!response.ok) {
+            throw new Error('Erro ao buscar licença');
+          }
+          const data = await response.json();
+          setForm({
+            numero: data.numero,
+            orgaoAmbiental: data.orgaoAmbiental,
+            emissao: data.emissao.split('T')[0], // Formata a data para o input
+            validade: data.validade.split('T')[0], // Formata a data para o input
+            empresaId: data.empresaId.toString(),
+          });
+        } catch (error) {
+          console.error('Erro ao buscar licença:', error);
+        }
+      };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      fetchLicenca();
+    }
+  }, [empresaId, licencaId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -51,37 +72,50 @@ export default function CadastroLicenca() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await fetch('/api/licenca', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(form),
-    });
-    router.push('/empresa/cadastroEmpresa');
+
+    // Exibe uma confirmação antes de salvar
+    const confirmSave = window.confirm(
+      licencaId
+        ? 'Tem certeza de que deseja atualizar esta licença?'
+        : 'Tem certeza de que deseja salvar esta nova licença?'
+    );
+
+    if (!confirmSave) {
+      // Se o usuário cancelar, interrompe o processo
+      return;
+    }
+
+    try {
+      const method = licencaId ? 'PUT' : 'POST'; // Usa PUT para editar, POST para criar
+      const endpoint = licencaId ? `/api/licenca/${licencaId}` : '/api/licenca';
+
+      const response = await fetch(endpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao salvar licença');
+      }
+
+      // Redireciona para a página de detalhes da empresa
+      router.push(`/empresa/detalhesEmpresa?id=${empresaId}`);
+    } catch (error) {
+      console.error('Erro ao salvar licença:', error);
+      alert('Erro ao salvar licença. Tente novamente.');
+    }
   };
 
   return (
     <div className="container mx-auto p-4 bg-white shadow">
-      <h1 className="text-2xl font-bold mb-4">Nova Licença Ambiental</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {licencaId ? 'Editar Licença Ambiental' : 'Nova Licença Ambiental'} -{' '}
+        {empresa ? empresa.razaoSocial : 'Carregando...'}
+      </h1>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700">Empresa</label>
-          <select
-            name="empresaId"
-            value={form.empresaId}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-            disabled // Desabilita o campo para evitar alterações
-          >
-            <option value="">Selecione uma empresa</option>
-            {empresas.map((empresa) => (
-              <option key={empresa.id} value={empresa.id}>
-                {empresa.razaoSocial}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="mb-4">
           <label className="block text-gray-700">Número</label>
           <input
@@ -123,7 +157,7 @@ export default function CadastroLicenca() {
           />
         </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Salvar
+          {licencaId ? 'Atualizar' : 'Salvar'}
         </button>
       </form>
     </div>

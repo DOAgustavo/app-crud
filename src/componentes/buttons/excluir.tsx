@@ -1,15 +1,17 @@
+import React from 'react';
 import { useRouter } from 'next/router';
 
-type ExcluirButtonProps = {
-  id: number; // ID da empresa a ser excluída
-  redirectUrl: string; // URL para redirecionar após a exclusão
-};
+interface ExcluirButtonProps {
+  id: number;
+  redirectUrl: string;
+  style?: React.CSSProperties; // Adiciona suporte à propriedade "style"
+}
 
-export default function ExcluirButton({ id, redirectUrl }: ExcluirButtonProps) {
+const ExcluirButton: React.FC<ExcluirButtonProps> = ({ id, redirectUrl, style }) => {
   const router = useRouter();
 
   const handleExcluir = async () => {
-    const confirm = window.confirm('Tem certeza que deseja excluir esta empresa?');
+    const confirm = window.confirm('Tem certeza que deseja excluir este item?');
     if (!confirm) return;
 
     try {
@@ -18,24 +20,26 @@ export default function ExcluirButton({ id, redirectUrl }: ExcluirButtonProps) {
       });
 
       if (response.ok) {
-        alert('Empresa excluída com sucesso!');
+        alert('Item excluído com sucesso!');
         router.push(redirectUrl); // Redireciona para a URL especificada
       } else {
-        alert('Erro ao excluir a empresa.');
+        alert('Erro ao excluir o item.');
       }
     } catch (error) {
-      console.error('Erro ao excluir empresa:', error);
-      alert('Ocorreu um erro ao tentar excluir a empresa.');
+      console.error('Erro ao excluir o item:', error);
+      alert('Ocorreu um erro ao tentar excluir o item.');
     }
   };
 
   return (
     <button
-      type="button"
-      className="btn btn-danger btn-sm"
+      className="btn btn-danger"
+      style={style} // Aplica o estilo recebido
       onClick={handleExcluir}
     >
       Excluir
     </button>
   );
-}
+};
+
+export default ExcluirButton;
