@@ -45,8 +45,8 @@ export default function CadastroEmpresa() {
 
   return (
     // Container principal
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="container mx-auto p-4 bg-white shadow-md rounded-lg" style={{ maxWidth: '1000px', borderRadius: '10px', }}>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 ">
+      <div className="container mx-auto p-4 bg-white shadow-md rounded-lg" style={{ maxWidth: '80%', borderRadius: '10px', }}>
         {/* Título da página */}
         <h1 className="text-2xl font-bold mb-4 text-center">Nova Empresa</h1>
         {/* Formulário de cadastro de empresa */}

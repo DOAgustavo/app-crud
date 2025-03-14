@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 
-type Empresa = {
+export type Empresa = {
   id: number;
   razaoSocial: string;
-  // Adicione outros campos conforme necessário
 };
 
 type EmpresaItemProps = {
