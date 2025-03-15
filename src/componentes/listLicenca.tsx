@@ -62,12 +62,12 @@ const ListLicenca: React.FC<ListLicencaProps> = ({ empresaId, onExcluir }) => {
           </span>
           <button 
             style={{
-              backgroundColor: 'red',
               color: 'white',
               padding: '8px 16px',
               borderRadius: '4px',
               border: 'none',
               cursor: 'pointer',
+              background: 'none', // Remove o fundo
             }}
             onClick={() => onExcluir(licenca.id)}
           >

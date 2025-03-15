@@ -155,7 +155,6 @@ export default function DetalhesEmpresa() {
       {/* Lista de Licenças - Fora da Estrutura Principal */}
       <div
         style={{
-          backgroundColor: 'white',
           padding: '20px',
           borderRadius: '8px',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
