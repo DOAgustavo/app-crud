@@ -8,7 +8,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         body {
           background-color: rgb(17, 17, 17);
         }
+          
       `}</style>
+      
       <Component {...pageProps} />
     </>
   );

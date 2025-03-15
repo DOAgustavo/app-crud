@@ -153,16 +153,7 @@ export default function DetalhesEmpresa() {
       </div>
 
       {/* Lista de Licenças - Fora da Estrutura Principal */}
-      <div
-        style={{
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          maxWidth: '600px',
-          margin: '20px auto',
-          marginTop: '20px',
-        }}
-      >
+      <div>
         <ListLicenca
           empresaId={empresa.id} // Passa o ID da empresa para buscar as licenças
           onExcluir={(licencaId) => {

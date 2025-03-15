@@ -47,35 +47,34 @@ const ListLicenca: React.FC<ListLicencaProps> = ({ empresaId, onExcluir }) => {
   }
 
   if (licencas.length === 0) {
-    return <p>Nenhuma licença encontrada para esta empresa.</p>;
+    return (
+      <div className="mt-4 d-flex justify-content-center">
+        <p style={{ color: 'white' }}>Nenhuma licença encontrada para esta empresa.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="mt-4 bg-white ">
+    <div className="mt-4 d-flex justify-content-center">
+    <select
+      className="form-select w-auto"
+      style={{
+        maxWidth: '300px', // Define uma largura máxima
+      }}
+      size={5} // Mostra até 5 opções visíveis e ativa o scroll
+      onChange={(e) => {
+        const selectedId = Number(e.target.value);
+        console.log(`Licença selecionada: ${selectedId}`);
+      }}
+    >
+      <option value="">Selecione uma licença</option>
       {licencas.map((licenca) => (
-        <div
-          key={licenca.id}
-          className="flex justify-between items-center mb-4 p-4 border rounded shadow-sm"
-        >
-          <span>
-            {licenca.numero} - {licenca.orgaoAmbiental}
-          </span>
-          <button 
-            style={{
-              color: 'white',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              border: 'none',
-              cursor: 'pointer',
-              background: 'none', // Remove o fundo
-            }}
-            onClick={() => onExcluir(licenca.id)}
-          >
-            Excluir
-          </button>
-        </div>
+        <option key={licenca.id} value={licenca.id}>
+          {licenca.numero} - {licenca.orgaoAmbiental}
+        </option>
       ))}
-    </div>
+    </select>
+  </div>
   );
 };
 
