@@ -1,53 +1,124 @@
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import ExcluirButton from '../../componentes/buttons/excluir';
 
-type Empresa = {
+interface Empresa {
   id: number;
   razaoSocial: string;
   cnpj: string;
-  endereco: string;
-};
+  cep: string;
+  cidade: string;
+  estado: string;
+  bairro: string;
+  complemento: string;
+}
 
 export default function DetalhesEmpresa() {
-  const router = useRouter();
-  const { id } = router.query; // Obtém o ID da empresa da URL
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
-    if (!id) return; // Aguarda o ID estar disponível
+    if (!id) return;
 
     async function fetchEmpresa() {
       try {
         const response = await fetch(`/api/empresa/${id}`);
-        if (!response.ok) {
-          throw new Error('Erro ao buscar empresa');
-        }
-        const data = await response.json();
+        const data: Empresa = await response.json();
         setEmpresa(data);
       } catch (error) {
         console.error('Erro ao buscar empresa:', error);
+        setEmpresa(null);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchEmpresa();
   }, [id]);
 
+  const handleExcluir = async () => {
+    const confirm = window.confirm('Tem certeza que deseja excluir esta empresa?');
+    if (!confirm) return;
+
+    try {
+      const response = await fetch(`/api/empresa/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('Empresa excluída com sucesso!');
+        router.push('/empresa'); // Redireciona para a lista de empresas
+      } else {
+        alert('Erro ao excluir a empresa.');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir empresa:', error);
+    }
+  };
+
+  if (loading) {
+    return <p>Carregando...</p>;
+  }
+
   if (!empresa) {
-    return <div>Carregando...</div>; // Exibe "Carregando..." enquanto os dados são buscados
+    return <p>Empresa não encontrada.</p>;
   }
 
   return (
-    <div className="container mx-auto p-4 bg-white shadow-md rounded-lg" style={{ borderRadius: '10px' }}>
-      <h1 className="text-2xl font-bold mb-4">Detalhes da Empresa</h1>
+    <div
+      style={{
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        maxWidth: '600px',
+        margin: '20px auto',
+      }}
+    >
+      <h1>Detalhes da Empresa</h1>
       <p><strong>Razão Social:</strong> {empresa.razaoSocial}</p>
       <p><strong>CNPJ:</strong> {empresa.cnpj}</p>
-      <p><strong>Endereço:</strong> {empresa.endereco}</p>
-      <button
-        className="btn btn-primary mt-4"
-        onClick={() => router.back()} // Volta para a página anterior
-      >
-        Voltar
-      </button>
+      <p><strong>CEP:</strong> {empresa.cep}</p>
+      <p><strong>Cidade:</strong> {empresa.cidade}</p>
+      <p><strong>Estado:</strong> {empresa.estado}</p>
+      <p><strong>Bairro:</strong> {empresa.bairro}</p>
+      <p><strong>Complemento:</strong> {empresa.complemento}</p>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+        {/* Botão Cadastrar Licença */}
+        <button
+          className="btn btn-success"
+          onClick={() => router.push(`/cadastros/cadastroLicenca?empresaId=${empresa.id}`)}
+        >
+          Cadastrar Licença
+        </button>
+
+        <div style={{ display: 'flex', gap: '10px' }}>
+          {/* Botão Editar */}
+          <button
+            className="btn btn-primary"
+            onClick={() => router.push(`/empresa/editarEmpresa?id=${empresa.id}`)}
+          >
+            Editar
+          </button>
+
+          {/* Botão Voltar */}
+          <button
+            className="btn btn-secondary"
+            onClick={() => router.push('http://localhost:3000')}
+          >
+            Voltar
+          </button>
+
+          {/* Botão Excluir */}
+         
+      {/* Outros elementos */}
+      <ExcluirButton id={empresa.id} redirectUrl="http://localhost:3000/" />
+    
+        </div>
+      </div>
     </div>
   );
 }

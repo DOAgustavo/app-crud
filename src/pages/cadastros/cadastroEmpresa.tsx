@@ -60,8 +60,8 @@ export default function CadastroEmpresa() {
 
   return (
     // Container principal
-    <div className="d-flex align-items-center justify-content-center vh-100 bg-gray-100">
-    <div className="container mx-auto p-4 bg-white shadow-md rounded-lg" style={{ borderRadius: '10px' }}>
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-gray-60 w-50 mx-auto">
+      <div className="container mx-auto p-4 bg-white shadow-md rounded-lg" style={{ borderRadius: '10px' }}>
      {/* Título da página */}
         <h1 className="text-2xl font-bold mb-4 text-center">Nova Empresa</h1>
         {/* Formulário de cadastro de empresa */}
@@ -176,12 +176,7 @@ export default function CadastroEmpresa() {
             </Link>
           </div>
         </form>
-        {/* Link para adicionar nova licença */}
-        <Link href="/empresa/cadastroLicenca" legacyBehavior>
-          <a className="bg-green-500 text-white px-4 py-2 rounded mt-4 inline-block text-center w-full">
-            Adicionar Nova Licença
-          </a>
-        </Link>
+        
       </div>
     </div>
   );

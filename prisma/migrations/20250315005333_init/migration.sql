@@ -18,5 +18,5 @@ CREATE TABLE "Licenca" (
     "emissao" DATETIME NOT NULL,
     "validade" DATETIME NOT NULL,
     "empresaId" INTEGER NOT NULL,
-    CONSTRAINT "Licenca_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Licenca_empresaId_fkey" FOREIGN KEY ("empresaId") REFERENCES "Empresa" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );

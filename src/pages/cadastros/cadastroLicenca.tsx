@@ -15,8 +15,16 @@ export default function CadastroLicenca() {
   });
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const router = useRouter();
+  const { empresaId } = router.query; // Captura o empresaId da URL
 
   useEffect(() => {
+    if (empresaId) {
+      setForm((prevForm) => ({
+        ...prevForm,
+        empresaId: empresaId as string, // Define o empresaId no formulário
+      }));
+    }
+
     async function fetchEmpresas() {
       try {
         const response = await fetch('/api/empresa');
@@ -32,7 +40,7 @@ export default function CadastroLicenca() {
     }
 
     fetchEmpresas();
-  }, []);
+  }, [empresaId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({
@@ -54,7 +62,7 @@ export default function CadastroLicenca() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-white shadow">
       <h1 className="text-2xl font-bold mb-4">Nova Licença Ambiental</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -64,6 +72,7 @@ export default function CadastroLicenca() {
             value={form.empresaId}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded"
+            disabled // Desabilita o campo para evitar alterações
           >
             <option value="">Selecione uma empresa</option>
             {empresas.map((empresa) => (

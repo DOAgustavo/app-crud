@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Empresa {
@@ -16,9 +16,8 @@ model Empresa {
   estado      String
   bairro      String
   complemento String?
-  licencas    Licenca[] // Adiciona o campo de relação oposto
+  licencas    Licenca[]
 }
-
 
 model Licenca {
   id             Int      @id @default(autoincrement())
@@ -27,5 +26,5 @@ model Licenca {
   emissao        DateTime
   validade       DateTime
   empresaId      Int
-  empresa        Empresa  @relation(fields: [empresaId], references: [id])
+  empresa        Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 }
