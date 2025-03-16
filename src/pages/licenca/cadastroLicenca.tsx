@@ -73,11 +73,15 @@ export default function CadastroLicenca() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Verifica se todos os campos estão preenchidos
+    if (!form.numero || !form.orgaoAmbiental || !form.emissao || !form.validade) {
+      alert('Por favor, preencha todos os campos antes de salvar.');
+      return;
+    }
+
     // Exibe uma confirmação antes de salvar
     const confirmSave = window.confirm(
-      licencaId
-        ? 'Tem certeza de que deseja atualizar esta licença?'
-        : 'Tem certeza de que deseja salvar esta nova licença?'
+      licencaId ? 'Tem certeza de que deseja atualizar esta licença?' : 'Tem certeza de que deseja salvar esta nova licença?'
     );
 
     if (!confirmSave) {
@@ -112,9 +116,9 @@ export default function CadastroLicenca() {
   return (
     <div className="container mx-auto p-4 bg-white shadow">
       <h1 className="text-2xl font-bold mb-4">
-        {licencaId ? 'Editar Licença Ambiental' : 'Nova Licença Ambiental'} -{' '}
-        {empresa ? empresa.razaoSocial : 'Carregando...'}
+        Nova Licença Ambiental - {empresa ? empresa.razaoSocial : 'Carregando...'}
       </h1>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700">Número</label>
@@ -156,9 +160,24 @@ export default function CadastroLicenca() {
             className="w-full px-4 py-2 border rounded"
           />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          {licencaId ? 'Atualizar' : 'Salvar'}
-        </button>
+
+       {/* Botão de Salvar */}
+<button
+  type="submit"
+  className="btn btn-primary"
+>
+  {licencaId ? 'Atualizar' : 'Salvar'}
+</button>
+
+        {/* Botão de Voltar */}
+        {/* Botão de Voltar */}
+<button
+  type="button"
+  className="btn btn-secondary"
+  onClick={() => router.push(`/empresa/detalhesEmpresa?id=${empresaId}`)}
+>
+  Voltar
+</button>
       </form>
     </div>
   );

@@ -67,7 +67,9 @@ const ListLicenca: React.FC<ListLicencaProps> = ({ empresaId, onExcluir }) => {
         console.log(`Licença selecionada: ${selectedId}`);
       }}
     >
-      <option value="">Selecione uma licença</option>
+      <option value="" disabled>
+        Selecione uma licença
+      </option>
       {licencas.map((licenca) => (
         <option key={licenca.id} value={licenca.id}>
           {licenca.numero} - {licenca.orgaoAmbiental}

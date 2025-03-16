@@ -7,7 +7,9 @@ type AppBarProps = {
 
 export default function AppBar({ searchTerm, onSearchChange }: AppBarProps) {
   return (
-    <div className="flex justify-between items-center mb-4">
+    <div className="flex justify-between items-center px-4 py-2  bg-gray-800 mb-4"style={{
+      gap: '16px', // Espaçamento entre os elementos
+    }}>
       <div className="container text-center">
         <div className="row align-items-center">
           <div className="col">

@@ -73,20 +73,7 @@ export default function DetalhesEmpresa() {
   return (
     <>
       {/* Detalhes da Empresa */}
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          maxWidth: '600px',
-          margin: '20px auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-        }}
-      >
-        <h1 style={{ fontSize: '1.5rem', textAlign: 'center' }}>Detalhes da Empresa</h1>
+      <div className="container my-3 p-3 bg-white rounded shadow-sm" style={{ maxWidth: '500px' }}><h1 style={{ fontSize: '1.5rem', textAlign: 'center' }}>Detalhes da Empresa</h1>
         <p><strong>Razão Social:</strong> {empresa.razaoSocial}</p>
         <p><strong>CNPJ:</strong> {empresa.cnpj}</p>
         <p><strong>CEP:</strong> {empresa.cep}</p>
@@ -95,34 +82,20 @@ export default function DetalhesEmpresa() {
         <p><strong>Bairro:</strong> {empresa.bairro}</p>
         <p><strong>Complemento:</strong> {empresa.complemento}</p>
 
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            gap: '10px',
-            marginTop: '20px',
-          }}
-        >
+        <div className="d-flex flex-wrap justify-between gap-2 mt-3">
           {/* Botão Cadastrar Licença */}
           <button
-            className="btn btn-success"
-            style={{
-              flex: '1 1 calc(50% - 10px)',
-              minWidth: '120px',
-            }}
-            onClick={() => router.push(`/cadastros/cadastroLicenca?empresaId=${empresa.id}`)}
+            className="btn btn-success "
+            style={{ minWidth: '120px' }}
+            onClick={() => router.push(`/licenca/cadastroLicenca?empresaId=${empresa.id}`)}
           >
             Cadastrar Licença
           </button>
 
           {/* Botão Editar */}
           <button
-            className="btn btn-primary"
-            style={{
-              flex: '1 1 calc(50% - 10px)',
-              minWidth: '120px',
-            }}
+            className="btn btn-primary "
+            style={{ minWidth: '120px' }}
             onClick={() => router.push(`/empresa/editarEmpresa?id=${empresa.id}`)}
           >
             Editar
@@ -130,11 +103,8 @@ export default function DetalhesEmpresa() {
 
           {/* Botão Voltar */}
           <button
-            className="btn btn-secondary"
-            style={{
-              flex: '1 1 calc(50% - 10px)',
-              minWidth: '120px',
-            }}
+            className="btn btn-secondary "
+            style={{ minWidth: '120px' }}
             onClick={() => router.push('/')}
           >
             Voltar
@@ -144,10 +114,7 @@ export default function DetalhesEmpresa() {
           <ExcluirButton
             id={empresa.id}
             redirectUrl="/"
-            style={{
-              flex: '1 1 calc(50% - 10px)',
-              minWidth: '120px',
-            }}
+            style={{ minWidth: '120px' }}
           />
         </div>
       </div>
