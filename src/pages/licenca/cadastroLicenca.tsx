@@ -1,71 +1,52 @@
 "use client";
+// Indica que este componente será renderizado no lado do cliente (Next.js).
 
 import { useRouter } from "next/router";
-import { useLicenca } from "../hooks/useLicenca";
+// Importa o hook `useRouter` do Next.js para manipular a navegação e acessar os parâmetros da URL.
+
+import { useCadastroLicenca } from "../hooks/useCadastroLicenca";
+// Importa o hook customizado que encapsula a lógica de estado e manipulação do formulário de cadastro de licenças.
+
 import LicencaForm from "../../componentes/cadastroLicenca";
-import { saveLicenca } from "../../services/licencaService";
+// Importa o componente de formulário reutilizável para exibir e manipular os dados da licença.
 
 export default function CadastroLicenca() {
   const router = useRouter();
-  const { empresaId, id: licencaId } = router.query;
+  const { empresaId } = router.query;
+  // Obtém o ID da empresa a partir dos parâmetros da URL.
 
   const empresaIdString = Array.isArray(empresaId) ? empresaId[0] : empresaId;
-  const licencaIdString = Array.isArray(licencaId) ? licencaId[0] : licencaId;
+  // Garante que o `empresaId` seja uma string, mesmo que venha como um array.
 
-  // Usa o hook para obter os dados da empresa e do formulário
-  const { form, setForm, empresa } = useLicenca(empresaIdString, licencaIdString);
+  const { form, setForm, handleSubmit, handleCancel } = useCadastroLicenca(empresaIdString);
+  // Desestruturação do hook `useCadastroLicenca` para acessar:
+  // - `form`: Estado do formulário.
+  // - `setForm`: Função para atualizar o estado do formulário.
+  // - `handleSubmit`: Função para enviar os dados do formulário.
+  // - `handleCancel`: Função para cancelar o cadastro e redirecionar.
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // Valida se todos os campos obrigatórios estão preenchidos
-    if (!form.numero || !form.orgaoAmbiental || !form.emissao || !form.validade || !form.empresaId) {
-      alert("Por favor, preencha todos os campos antes de salvar.");
-      return;
-    }
-
-    const confirmSave = window.confirm(
-      licencaIdString
-        ? "Tem certeza de que deseja atualizar esta licença?"
-        : "Tem certeza de que deseja salvar esta nova licença?"
-    );
-
-    if (!confirmSave) return;
-
-    try {
-      await saveLicenca(form, licencaIdString); // Salva ou atualiza a licença
-      router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`); // Redireciona para os detalhes da empresa
-    } catch (error) {
-      console.error("Erro ao salvar licença:", error);
-      alert("Erro ao salvar licença. Tente novamente.");
-    }
-  };
-
-  const handleCancel = () => {
-    router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`);
+    // Atualiza o estado do formulário com base no campo que foi alterado.
   };
 
   return (
     <div className="container my-3 p-3 bg-white rounded shadow-s w-full" style={{ maxWidth: "500px" }}>
-      <h1 className="text-2xl font-bold mb-4">
-        {licencaIdString ? "Editar Licença Ambiental" : "Nova Licença Ambiental"} -{" "}
-       
-      </h1>
+      {/* Define o contêiner do formulário com estilização básica. */}
+      <h1 className="text-2xl font-bold mb-4">Nova Licença Ambiental</h1>
+      {/* Título do formulário. */}
 
       <LicencaForm
         form={form}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
-        isEditMode={!!licencaIdString}
+        isEditMode={false} // Define explicitamente que este formulário está no modo de cadastro.
       />
+      {/* Componente de formulário reutilizável para manipular os dados da licença. */}
     </div>
   );
 }

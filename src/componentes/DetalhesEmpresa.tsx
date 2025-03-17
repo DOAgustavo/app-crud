@@ -1,5 +1,8 @@
 import { useRouter } from "next/router";
-import ExcluirButton from "./buttons/excluir"; // Botão de exclusão
+// Importa o hook `useRouter` do Next.js para manipular a navegação.
+
+import ExcluirButton from "./buttons/excluir";
+// Importa o componente de botão para exclusão.
 
 interface EmpresaDetalhesProps {
   empresa: {
@@ -12,15 +15,23 @@ interface EmpresaDetalhesProps {
     bairro: string;
     complemento: string;
   };
-  onExcluir: () => void; // Função para excluir a empresa
+  // Define a estrutura dos dados da empresa que serão exibidos.
+
+  onExcluir: () => void;
+  // Função para excluir a empresa.
 }
 
 export default function EmpresaDetalhes({ empresa, onExcluir }: EmpresaDetalhesProps) {
   const router = useRouter();
+  // Instancia o hook `useRouter` para manipular a navegação.
 
   return (
     <div className="container my-3 p-3 bg-white rounded shadow-sm" style={{ maxWidth: "500px" }}>
+      {/* Define o contêiner principal com estilização básica. */}
       <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>Detalhes da Empresa</h1>
+      {/* Título da seção de detalhes. */}
+
+      {/* Exibe os detalhes da empresa. */}
       <p><strong>Razão Social:</strong> {empresa.razaoSocial}</p>
       <p><strong>CNPJ:</strong> {empresa.cnpj}</p>
       <p><strong>CEP:</strong> {empresa.cep}</p>
@@ -30,7 +41,9 @@ export default function EmpresaDetalhes({ empresa, onExcluir }: EmpresaDetalhesP
       <p><strong>Complemento:</strong> {empresa.complemento}</p>
 
       <div className="d-flex flex-wrap justify-between gap-2 mt-3">
-        {/* Botão Cadastrar Licença */}
+        {/* Define um contêiner para os botões com espaçamento e layout flexível. */}
+
+        {/* Botão para cadastrar uma nova licença. */}
         <button
           className="btn btn-success"
           style={{ minWidth: "120px" }}
@@ -39,7 +52,7 @@ export default function EmpresaDetalhes({ empresa, onExcluir }: EmpresaDetalhesP
           Cadastrar Licença
         </button>
 
-        {/* Botão Editar */}
+        {/* Botão para editar os dados da empresa. */}
         <button
           className="btn btn-primary"
           style={{ minWidth: "120px" }}
@@ -48,7 +61,7 @@ export default function EmpresaDetalhes({ empresa, onExcluir }: EmpresaDetalhesP
           Editar
         </button>
 
-        {/* Botão Voltar */}
+        {/* Botão para voltar à página inicial. */}
         <button
           className="btn btn-secondary"
           style={{ minWidth: "120px" }}
@@ -57,7 +70,7 @@ export default function EmpresaDetalhes({ empresa, onExcluir }: EmpresaDetalhesP
           Voltar
         </button>
 
-        {/* Botão Excluir */}
+        {/* Botão para excluir a empresa. */}
         <ExcluirButton id={empresa.id} onExcluir={onExcluir} />
       </div>
     </div>

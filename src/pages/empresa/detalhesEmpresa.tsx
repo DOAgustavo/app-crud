@@ -1,80 +1,35 @@
 "use client";
+// Indica que este componente será renderizado no lado do cliente (Next.js).
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import ListLicenca from "../../componentes/listLicenca"; // Componente para listar licenças
-import EmpresaDetalhes from "../../componentes/DetalhesEmpresa"; // Novo componente para detalhes da empresa
-import { excluirEmpresa } from "../../services/empresaService"; // Serviço para exclusão de empresas
+import { useDetalhesEmpresa } from "../hooks/useDetalhesEmpresa";
+// Hook customizado que encapsula a lógica de busca, exclusão e estado da empresa.
 
-interface Empresa {
-  id: number;
-  razaoSocial: string;
-  cnpj: string;
-  cep: string;
-  cidade: string;
-  estado: string;
-  bairro: string;
-  complemento: string;
-}
+import ListLicenca from "../../componentes/listLicenca";
+// Componente para exibir a lista de licenças associadas à empresa.
+
+import EmpresaDetalhes from "../../componentes/DetalhesEmpresa";
+// Componente para exibir os detalhes da empresa, incluindo a funcionalidade de exclusão.
 
 export default function DetalhesEmpresa() {
-  const [empresa, setEmpresa] = useState<Empresa | null>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const { id } = router.query;
+  const { empresa, loading, excluirEmpresaHandler } = useDetalhesEmpresa();
+  // Desestruturação do hook `useDetalhesEmpresa` para acessar os dados da empresa, estado de carregamento e função de exclusão.
 
-  useEffect(() => {
-    if (!id) return;
+  if (loading) return <p>Carregando...</p>;
+  // Renderiza uma mensagem de carregamento enquanto os dados estão sendo buscados.
 
-    async function fetchEmpresa() {
-      try {
-        const response = await fetch(`/api/empresa/${id}`);
-        if (!response.ok) {
-          throw new Error("Erro ao buscar empresa");
-        }
-        const data: Empresa = await response.json();
-        setEmpresa(data);
-      } catch (error) {
-        console.error("Erro ao buscar empresa:", error);
-        setEmpresa(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEmpresa();
-  }, [id]);
-
-  const handleExcluirEmpresa = async () => {
-    const confirm = window.confirm("Tem certeza que deseja excluir esta empresa?");
-    if (!confirm) return;
-
-    try {
-      await excluirEmpresa(Number(id)); // Chama o serviço para excluir a empresa
-      alert("Empresa excluída com sucesso!");
-      router.push("/"); // Redireciona para a página inicial
-    } catch (error) {
-      console.error("Erro ao excluir empresa:", error);
-      alert("Erro ao excluir a empresa.");
-    }
-  };
-
-  if (loading) {
-    return <p>Carregando...</p>;
-  }
-
-  if (!empresa) {
-    return <p>Empresa não encontrada.</p>;
-  }
+  if (!empresa) return <p>Empresa não encontrada.</p>;
+  // Renderiza uma mensagem caso a empresa não seja encontrada.
 
   return (
     <>
       {/* Detalhes da Empresa */}
-      <EmpresaDetalhes empresa={empresa} onExcluir={handleExcluirEmpresa} />
+      <EmpresaDetalhes empresa={empresa} onExcluir={excluirEmpresaHandler} />
+      {/* Componente que exibe os detalhes da empresa e permite a exclusão. */}
 
       {/* Lista de Licenças */}
       <div>
         <ListLicenca empresaId={empresa.id} />
+        {/* Componente que exibe a lista de licenças associadas à empresa. */}
       </div>
     </>
   );

@@ -1,8 +1,11 @@
 // npx ts-node --project tsconfig.scripts.json prisma/scripts/createLicencas.ts
-// use o codigo acima para rodar o script no terminal do vs code
+// Comando para executar o script no terminal do VS Code usando o `ts-node`.
+
 import { PrismaClient } from '@prisma/client';
+// Importa o cliente do Prisma para interagir com o banco de dados.
 
 const prisma = new PrismaClient();
+// Instancia o cliente do Prisma para realizar operações no banco de dados.
 
 async function main() {
   const licencas = [
@@ -37,27 +40,36 @@ async function main() {
       validade: new Date('2025-05-01'),
     },
   ];
+  // Define um array de objetos representando as licenças a serem criadas.
 
-  // Cria 5 licenças para cada empresa com IDs de 1 a 4
+  // Cria 5 licenças para cada empresa com IDs de 1 a 4.
   for (let empresaId = 1; empresaId <= 4; empresaId++) {
+    // Itera sobre os IDs das empresas (de 1 a 4).
     for (const licenca of licencas) {
+      // Itera sobre cada licença definida no array.
       await prisma.licenca.create({
         data: {
           ...licenca,
-          empresaId, // Relaciona a licença com a empresa pelo ID
+          empresaId, // Relaciona a licença com a empresa pelo ID.
         },
       });
+      // Cria a licença no banco de dados associada à empresa.
     }
   }
 
   console.log('Licenças criadas com sucesso!');
+  // Exibe uma mensagem de sucesso no console após a criação das licenças.
 }
 
 main()
   .catch((e) => {
     console.error(e);
+    // Loga qualquer erro que ocorrer durante a execução do script.
+
     process.exit(1);
+    // Encerra o processo com um código de erro.
   })
   .finally(async () => {
     await prisma.$disconnect();
+    // Desconecta o cliente do Prisma do banco de dados.
   });

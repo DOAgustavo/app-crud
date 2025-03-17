@@ -1,48 +1,23 @@
 "use client";
+// Indica que este componente será renderizado no lado do cliente (Next.js).
 
-import { useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
+// Importa o componente `Link` do Next.js para navegação entre páginas.
+
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createEmpresa } from "../../services/empresaService";
+// Importa os estilos do Bootstrap para estilização do formulário.
+
+import { useCadastroEmpresa } from "../hooks/useCadastroEmpresa";
+// Importa o hook customizado que encapsula a lógica de estado e manipulação do formulário.
 
 export default function CadastroEmpresa() {
-  const [form, setForm] = useState({
-    razaoSocial: "",
-    cnpj: "",
-    cep: "",
-    cidade: "",
-    estado: "",
-    bairro: "",
-    complemento: "",
-  });
+  const { form, handleChange, handleSubmit } = useCadastroEmpresa();
+  // Desestruturação do hook `useCadastroEmpresa` para acessar:
+  // - `form`: Estado do formulário.
+  // - `handleChange`: Função para atualizar os campos do formulário.
+  // - `handleSubmit`: Função para enviar os dados do formulário.
 
-  const router = useRouter();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const requiredFields = ["razaoSocial", "cnpj", "cep", "cidade", "estado", "bairro"];
-    const emptyFields = requiredFields.filter((field) => !form[field as keyof typeof form]);
-
-    if (emptyFields.length > 0) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
-      return;
-    }
-
-    try {
-      await createEmpresa(form);
-      router.push("/");
-    } catch (error) {
-      console.error("Erro ao criar empresa:", error);
-      alert("Erro ao criar empresa. Tente novamente.");
-    }
-  };
-
+  // Função para renderizar os campos do formulário.
   const renderInput = (label: string, name: string, required = true) => (
     <div className="col-12 col-md-6">
       <label htmlFor={name} className="form-label">
@@ -54,18 +29,38 @@ export default function CadastroEmpresa() {
         id={name}
         name={name}
         value={form[name as keyof typeof form]}
+        // Acessa o valor do campo correspondente no estado `form`.
         onChange={handleChange}
+        // Atualiza o estado do formulário ao alterar o valor do campo.
         required={required}
+        // Define se o campo é obrigatório.
       />
-      {required && <div className="invalid-feedback">Por favor, forneça um {label.toLowerCase()} válido.</div>}
+      {required && (
+        <div className="invalid-feedback">
+          Por favor, forneça um {label.toLowerCase()} válido.
+        </div>
+      )}
+      {/* Exibe uma mensagem de validação caso o campo obrigatório não seja preenchido. */}
     </div>
   );
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100  ">
-      <div className="container-fluid p-4 bg-white shadow-md rounded" style={{ maxWidth: "500px" }}>
+    <div className="d-flex align-items-center justify-content-center vh-100">
+      {/* Centraliza o formulário vertical e horizontalmente na tela. */}
+      <div
+        className="container-fluid p-4 bg-white shadow-md rounded"
+        style={{ maxWidth: "500px" }}
+      >
+        {/* Define o contêiner do formulário com estilização básica. */}
         <h1 className="text-center mb-4">Nova Empresa</h1>
-        <form onSubmit={handleSubmit} className="row g-3 needs-validation" noValidate>
+        {/* Título do formulário. */}
+        <form
+          onSubmit={handleSubmit}
+          // Define a função para enviar os dados do formulário.
+          className="row g-3 needs-validation"
+          noValidate
+          // Desativa a validação padrão do navegador.
+        >
           {renderInput("Razão Social", "razaoSocial")}
           {renderInput("CNPJ", "cnpj")}
           {renderInput("CEP", "cep")}
@@ -73,15 +68,20 @@ export default function CadastroEmpresa() {
           {renderInput("Estado", "estado")}
           {renderInput("Bairro", "bairro")}
           {renderInput("Complemento", "complemento", false)}
+          {/* Renderiza os campos do formulário usando a função `renderInput`. */}
           <div className="col-12">
             <button className="btn btn-primary w-100" type="submit">
               Salvar
             </button>
+            {/* Botão para enviar o formulário. */}
           </div>
           <div className="col-12 mt-3">
             <Link href="/" legacyBehavior>
-              <a className="btn btn-secondary w-100 text-center">Voltar para a Página Principal</a>
+              <a className="btn btn-secondary w-100 text-center">
+                Voltar para a Página Principal
+              </a>
             </Link>
+            {/* Link para voltar à página principal. */}
           </div>
         </form>
       </div>
