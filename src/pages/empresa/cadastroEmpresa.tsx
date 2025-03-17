@@ -62,8 +62,8 @@ export default function CadastroEmpresa() {
   );
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
-      <div className="container-fluid p-4 bg-white shadow-md rounded-lg" style={{ maxWidth: "600px" }}>
+    <div className="d-flex align-items-center justify-content-center vh-100  ">
+      <div className="container-fluid p-4 bg-white shadow-md rounded" style={{ maxWidth: "500px" }}>
         <h1 className="text-center mb-4">Nova Empresa</h1>
         <form onSubmit={handleSubmit} className="row g-3 needs-validation" noValidate>
           {renderInput("Razão Social", "razaoSocial")}

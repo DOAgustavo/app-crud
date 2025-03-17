@@ -1,67 +1,19 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Empresa } from '@prisma/client';
+import { useRouter } from "next/router";
+import { useLicenca } from "../hooks/useLicenca";
+import LicencaForm from "../../componentes/cadastroLicenca";
+import { saveLicenca } from "../../services/licencaService";
 
 export default function CadastroLicenca() {
-  const [form, setForm] = useState({
-    numero: '',
-    orgaoAmbiental: '',
-    emissao: '',
-    validade: '',
-    empresaId: '',
-  });
-  const [empresa, setEmpresa] = useState<Empresa | null>(null); // Dados da empresa vinculada
   const router = useRouter();
-  const { empresaId, id: licencaId } = router.query; // Captura o ID da empresa e da licença da URL
+  const { empresaId, id: licencaId } = router.query;
 
-  useEffect(() => {
-    if (empresaId) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        empresaId: empresaId as string, // Define o ID da empresa no formulário
-      }));
+  const empresaIdString = Array.isArray(empresaId) ? empresaId[0] : empresaId;
+  const licencaIdString = Array.isArray(licencaId) ? licencaId[0] : licencaId;
 
-      const fetchEmpresa = async () => {
-        try {
-          const response = await fetch(`/api/empresa/${empresaId}`);
-          if (!response.ok) {
-            throw new Error('Erro ao buscar empresa');
-          }
-          const data = await response.json();
-          setEmpresa(data); // Armazena os dados da empresa vinculada
-        } catch (error) {
-          console.error('Erro ao buscar empresa:', error);
-        }
-      };
-
-      fetchEmpresa();
-    }
-
-    if (licencaId) {
-      const fetchLicenca = async () => {
-        try {
-          const response = await fetch(`/api/licenca/${licencaId}`);
-          if (!response.ok) {
-            throw new Error('Erro ao buscar licença');
-          }
-          const data = await response.json();
-          setForm({
-            numero: data.numero,
-            orgaoAmbiental: data.orgaoAmbiental,
-            emissao: data.emissao.split('T')[0], // Formata a data para o input
-            validade: data.validade.split('T')[0], // Formata a data para o input
-            empresaId: data.empresaId.toString(),
-          });
-        } catch (error) {
-          console.error('Erro ao buscar licença:', error);
-        }
-      };
-
-      fetchLicenca();
-    }
-  }, [empresaId, licencaId]);
+  // Usa o hook para obter os dados da empresa e do formulário
+  const { form, setForm, empresa } = useLicenca(empresaIdString, licencaIdString);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -73,112 +25,47 @@ export default function CadastroLicenca() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Verifica se todos os campos estão preenchidos
-    if (!form.numero || !form.orgaoAmbiental || !form.emissao || !form.validade) {
-      alert('Por favor, preencha todos os campos antes de salvar.');
+    // Valida se todos os campos obrigatórios estão preenchidos
+    if (!form.numero || !form.orgaoAmbiental || !form.emissao || !form.validade || !form.empresaId) {
+      alert("Por favor, preencha todos os campos antes de salvar.");
       return;
     }
 
-    // Exibe uma confirmação antes de salvar
     const confirmSave = window.confirm(
-      licencaId ? 'Tem certeza de que deseja atualizar esta licença?' : 'Tem certeza de que deseja salvar esta nova licença?'
+      licencaIdString
+        ? "Tem certeza de que deseja atualizar esta licença?"
+        : "Tem certeza de que deseja salvar esta nova licença?"
     );
 
-    if (!confirmSave) {
-      // Se o usuário cancelar, interrompe o processo
-      return;
-    }
+    if (!confirmSave) return;
 
     try {
-      const method = licencaId ? 'PUT' : 'POST'; // Usa PUT para editar, POST para criar
-      const endpoint = licencaId ? `/api/licenca/${licencaId}` : '/api/licenca';
-
-      const response = await fetch(endpoint, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao salvar licença');
-      }
-
-      // Redireciona para a página de detalhes da empresa
-      router.push(`/empresa/detalhesEmpresa?id=${empresaId}`);
+      await saveLicenca(form, licencaIdString); // Salva ou atualiza a licença
+      router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`); // Redireciona para os detalhes da empresa
     } catch (error) {
-      console.error('Erro ao salvar licença:', error);
-      alert('Erro ao salvar licença. Tente novamente.');
+      console.error("Erro ao salvar licença:", error);
+      alert("Erro ao salvar licença. Tente novamente.");
     }
   };
 
+  const handleCancel = () => {
+    router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`);
+  };
+
   return (
-    <div className="container mx-auto p-4 bg-white shadow">
+    <div className="container my-3 p-3 bg-white rounded shadow-s w-full" style={{ maxWidth: "500px" }}>
       <h1 className="text-2xl font-bold mb-4">
-        Nova Licença Ambiental - {empresa ? empresa.razaoSocial : 'Carregando...'}
+        {licencaIdString ? "Editar Licença Ambiental" : "Nova Licença Ambiental"} -{" "}
+       
       </h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700">Número</label>
-          <input
-            type="text"
-            name="numero"
-            value={form.numero}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Órgão Ambiental</label>
-          <input
-            type="text"
-            name="orgaoAmbiental"
-            value={form.orgaoAmbiental}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Emissão</label>
-          <input
-            type="date"
-            name="emissao"
-            value={form.emissao}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Validade</label>
-          <input
-            type="date"
-            name="validade"
-            value={form.validade}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
-
-       {/* Botão de Salvar */}
-<button
-  type="submit"
-  className="btn btn-primary"
->
-  {licencaId ? 'Atualizar' : 'Salvar'}
-</button>
-
-        {/* Botão de Voltar */}
-        {/* Botão de Voltar */}
-<button
-  type="button"
-  className="btn btn-secondary"
-  onClick={() => router.push(`/empresa/detalhesEmpresa?id=${empresaId}`)}
->
-  Voltar
-</button>
-      </form>
+      <LicencaForm
+        form={form}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        isEditMode={!!licencaIdString}
+      />
     </div>
   );
 }

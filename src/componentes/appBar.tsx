@@ -26,7 +26,7 @@ export default function AppBar({ searchTerm, onSearchChange }: AppBarProps) {
           </div>
           <div className="col">
             <button type="button" className="btn btn-primary btn-sm">
-              <Link href="/cadastros/cadastroEmpresa" legacyBehavior>
+              <Link href="/empresa/cadastroEmpresa" legacyBehavior>
                 <a className="bg-blue-500 text-white px-4 py-2 text-decoration-none rounded">Nova Empresa</a>
               </Link>
             </button>

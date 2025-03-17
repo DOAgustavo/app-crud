@@ -8,10 +8,10 @@ type Licenca = {
   validade: string;
 };
 
-type ListLicencaProps = {
-  empresaId: number; // ID da empresa para buscar as licenças
-  onExcluir: (licencaId: number) => void; // Função chamada ao clicar no botão "Excluir"
-};
+interface ListLicencaProps {
+  empresaId: number;
+  onExcluir?: (licencaId: number) => void; // Torna a propriedade opcional
+}
 
 const ListLicenca: React.FC<ListLicencaProps> = ({ empresaId, onExcluir }) => {
   const [licencas, setLicencas] = useState<Licenca[]>([]);

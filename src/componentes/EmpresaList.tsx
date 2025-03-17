@@ -1,9 +1,11 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
+
 type Empresa = {
   id: number;
   razaoSocial: string;
+  
 };
 
 type EmpresaListProps = {

@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Empresa {
+model empresa {
   id          Int       @id @default(autoincrement())
   razaoSocial String
   cnpj        String
@@ -16,15 +16,17 @@ model Empresa {
   estado      String
   bairro      String
   complemento String?
-  licencas    Licenca[]
+  licenca     licenca[]
 }
 
-model Licenca {
+model licenca {
   id             Int      @id @default(autoincrement())
   numero         String
   orgaoAmbiental String
   emissao        DateTime
   validade       DateTime
   empresaId      Int
-  empresa        Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  empresa        empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade, map: "Licenca_empresaId_fkey")
+
+  @@index([empresaId], map: "Licenca_empresaId_fkey")
 }

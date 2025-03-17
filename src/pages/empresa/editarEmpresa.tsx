@@ -1,160 +1,57 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import SaveButton from '../../componentes/buttons/save'; // Importe o SaveButton
-
-
-interface Empresa {
-  id: number;
-  razaoSocial: string;
-  cnpj: string;
-  cep: string;
-  cidade: string;
-  estado: string;
-  bairro: string;
-  complemento: string;
-}
+import { useState } from "react";
+import { useRouter } from "next/router";
+import EmpresaForm from "../../componentes/EmpresaForm"; // Componente reutilizável para o formulário de empresa
+import { useEmpresa } from "../hooks/useEmpresa"; // Hook personalizado
+import { updateEmpresa } from "../../services/empresaService"; // Serviço para atualizar empresa
 
 export default function EditarEmpresa() {
-  const [empresa, setEmpresa] = useState<Empresa | null>(null);
-  const [editForm, setEditForm] = useState<Empresa | null>(null); // Estado para o formulário editável
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
 
-  useEffect(() => {
-    if (!id) return;
+  const { empresa, loading, setEmpresa } = useEmpresa(Number(id)); // Usa o hook para buscar a empresa
+  const [editForm, setEditForm] = useState(empresa); // Estado para os dados editáveis
 
-    async function fetchEmpresa() {
-      try {
-        const response = await fetch(`/api/empresa/${id}`);
-        if (!response.ok) {
-          throw new Error('Erro ao buscar empresa');
-        }
-        const data: Empresa = await response.json();
-        setEmpresa(data);
-        setEditForm(data); // Inicializa o formulário com os dados da empresa
-      } catch (error) {
-        console.error('Erro ao buscar empresa:', error);
-        setEmpresa(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEmpresa();
-  }, [id]);
-
+  // Atualiza os dados do formulário conforme o usuário edita os campos
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditForm((prev) => (prev ? { ...prev, [name]: value } : null));
   };
 
+  // Salva as alterações feitas no formulário
+  const handleSave = async () => {
+    if (!editForm) return;
+
+    try {
+      const updatedEmpresa = await updateEmpresa(editForm.id, editForm); // Atualiza a empresa no back-end
+      setEmpresa(updatedEmpresa); // Atualiza o estado com os dados salvos
+      alert("Empresa atualizada com sucesso!");
+      router.push(`/empresa/detalhesEmpresa?id=${editForm.id}`); // Redireciona para a página de detalhes
+    } catch (error) {
+      console.error("Erro ao salvar empresa:", error);
+      alert("Erro ao salvar empresa. Tente novamente.");
+    }
+  };
+
+  // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados
   if (loading) {
     return <p>Carregando...</p>;
   }
 
+  // Exibe uma mensagem caso a empresa não seja encontrada
   if (!empresa || !editForm) {
     return <p>Empresa não encontrada.</p>;
   }
 
+  // Renderiza o formulário de edição
   return (
-    <div
-      style={{
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        maxWidth: '600px',
-        margin: '20px auto',
-      }}
-    >
+    <div className="container bg-white p-4 rounded shadow" style={{ maxWidth: "600px", margin: "20px auto" }}>
       <h1>Editar Empresa</h1>
-      <form>
-        <div className="mb-3">
-          <label><strong>Razão Social:</strong></label>
-          <input
-            type="text"
-            name="razaoSocial"
-            className="form-control"
-            value={editForm.razaoSocial}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>CNPJ:</strong></label>
-          <input
-            type="text"
-            name="cnpj"
-            className="form-control"
-            value={editForm.cnpj}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>CEP:</strong></label>
-          <input
-            type="text"
-            name="cep"
-            className="form-control"
-            value={editForm.cep}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>Cidade:</strong></label>
-          <input
-            type="text"
-            name="cidade"
-            className="form-control"
-            value={editForm.cidade}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>Estado:</strong></label>
-          <input
-            type="text"
-            name="estado"
-            className="form-control"
-            value={editForm.estado}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>Bairro:</strong></label>
-          <input
-            type="text"
-            name="bairro"
-            className="form-control"
-            value={editForm.bairro}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label><strong>Complemento:</strong></label>
-          <input
-            type="text"
-            name="complemento"
-            className="form-control"
-            value={editForm.complemento}
-            onChange={handleInputChange}
-          />
-        </div>
-        {/* Substituí o botão "Salvar" pelo SaveButton */}
-        <div style={{ display:'flex',gap:'10px'}}><SaveButton
-          id={empresa.id}
-          editForm={editForm}
-          setEmpresa={setEmpresa}
-          onSuccess={() => router.push(`/empresa/detalhesEmpresa?id=${empresa.id}`)} // Redireciona após salvar
-        />
-       <button
-  type="button"
-  className="btn btn-secondary btn-sm w-auto"
-  onClick={() => router.back()}
->
-  Voltar
-</button></div>
-      </form>
+      <EmpresaForm
+        empresa={editForm}
+        onChange={handleInputChange}
+        onSave={handleSave} // Passa a função handleSave para o botão "Salvar"
+        onCancel={() => router.back()} // Volta para a página anterior
+      />
     </div>
   );
 }
