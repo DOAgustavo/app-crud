@@ -1,57 +1,80 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import EmpresaForm from "../../componentes/EmpresaForm"; // Componente reutilizável para o formulário de empresa
-import { useEmpresa } from "../hooks/useEmpresa"; // Hook personalizado
-import { updateEmpresa } from "../../services/empresaService"; // Serviço para atualizar empresa
+import EmpresaForm from "../../componentes/EmpresaForm";
+import { fetchEmpresa, updateEmpresa } from "../../services/empresaService";
 
 export default function EditarEmpresa() {
+  const [empresa, setEmpresa] = useState<{
+    razaoSocial: string;
+    cnpj: string;
+    cep: string;
+    cidade: string;
+    estado: string;
+    bairro: string;
+    complemento: string;
+  } | null>(null);
+
+  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
   const router = useRouter();
   const { id } = router.query;
 
-  const { empresa, loading, setEmpresa } = useEmpresa(Number(id)); // Usa o hook para buscar a empresa
-  const [editForm, setEditForm] = useState(empresa); // Estado para os dados editáveis
+  useEffect(() => {
+    if (!id || isNaN(Number(id))) return; // Verifica se o id é válido
 
-  // Atualiza os dados do formulário conforme o usuário edita os campos
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => (prev ? { ...prev, [name]: value } : null));
-  };
+    async function fetchData() {
+      try {
+        const data = await fetchEmpresa(Number(id)); // Converte o id para número
+        setEmpresa(data); // Atualiza o estado com os dados da empresa
+      } catch (error) {
+        console.error("Erro ao buscar empresa:", error);
+      } finally {
+        setLoading(false); // Finaliza o carregamento
+      }
+    }
 
-  // Salva as alterações feitas no formulário
+    fetchData();
+  }, [id]);
+
   const handleSave = async () => {
-    if (!editForm) return;
+    if (!empresa || !id || isNaN(Number(id))) return;
 
     try {
-      const updatedEmpresa = await updateEmpresa(editForm.id, editForm); // Atualiza a empresa no back-end
-      setEmpresa(updatedEmpresa); // Atualiza o estado com os dados salvos
+      await updateEmpresa(Number(id), empresa); // Converte o id para número
       alert("Empresa atualizada com sucesso!");
-      router.push(`/empresa/detalhesEmpresa?id=${editForm.id}`); // Redireciona para a página de detalhes
+      router.push(`/empresa/detalhesEmpresa?id=${id}`); // Redireciona para os detalhes da empresa
     } catch (error) {
-      console.error("Erro ao salvar empresa:", error);
-      alert("Erro ao salvar empresa. Tente novamente.");
+      console.error("Erro ao atualizar empresa:", error);
+      alert("Erro ao atualizar empresa. Tente novamente.");
     }
   };
 
-  // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados
+  const handleCancel = () => {
+    router.push(`/empresa/detalhesEmpresa?id=${id}`); // Redireciona para os detalhes da empresa
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!empresa) return;
+
+    setEmpresa({
+      ...empresa,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   if (loading) {
-    return <p>Carregando...</p>;
+    return <p>Carregando...</p>; // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados
   }
 
-  // Exibe uma mensagem caso a empresa não seja encontrada
-  if (!empresa || !editForm) {
-    return <p>Empresa não encontrada.</p>;
+  if (!empresa) {
+    return <p>Empresa não encontrada.</p>; // Exibe uma mensagem caso a empresa não seja encontrada
   }
 
-  // Renderiza o formulário de edição
   return (
-    <div className="container bg-white p-4 rounded shadow" style={{ maxWidth: "600px", margin: "20px auto" }}>
-      <h1>Editar Empresa</h1>
-      <EmpresaForm
-        empresa={editForm}
-        onChange={handleInputChange}
-        onSave={handleSave} // Passa a função handleSave para o botão "Salvar"
-        onCancel={() => router.back()} // Volta para a página anterior
-      />
+    <div className="container my-3 p-3 bg-white rounded shadow-sm" style={{ maxWidth: "500px" }}>
+      <h1 className="text-center">Editar Empresa</h1>
+      <EmpresaForm empresa={empresa} onChange={handleChange} onSave={handleSave} onCancel={handleCancel} />
     </div>
   );
 }
