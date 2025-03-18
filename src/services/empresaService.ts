@@ -96,3 +96,16 @@ export const updateEmpresa = async (id: number, data: any) => {
 
   return response.json();
 };
+
+/**
+ * Busca os dados de uma empresa pelo ID.
+ * @param id - ID da empresa a ser buscada.
+ * @returns Dados da empresa.
+ */
+// filepath: c:\src\app-crud\src\services\empresaService.ts
+import axios from "axios";
+
+export async function getEmpresaById(id: string) {
+  const response = await axios.get(`/api/empresa/${id}`);
+  return response.data; // Certifique-se de que a API retorna um objeto com a propriedade `razaoSocial`
+}

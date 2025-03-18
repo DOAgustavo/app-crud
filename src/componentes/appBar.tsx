@@ -38,6 +38,9 @@ export default function AppBar({ searchTerm, onSearchChange }: AppBarProps) {
                 Nova Licença
               </a>
             </Link>
+            <Link href="/licenca/allListLicencas" legacyBehavior>
+              <a className="btn btn-success">Lista Licenças</a>
+            </Link>
           </div>
         </div>
       </div>
