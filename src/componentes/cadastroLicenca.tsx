@@ -1,83 +1,119 @@
 // Define as propriedades esperadas pelo componente `LicencaForm`.
 interface LicencaFormProps {
   form: {
+    empresaId: string; // ID da empresa associada à licença.
     numero: string; // Número da licença.
-    orgaoAmbiental: string; // Nome do órgão ambiental responsável.
+    orgaoAmbiental: string; // Órgão ambiental responsável.
     emissao: string; // Data de emissão da licença.
     validade: string; // Data de validade da licença.
-    empresaId: string; // ID da empresa associada à licença.
   };
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Função para lidar com alterações nos campos do formulário.
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Função para enviar os dados do formulário.
-  onCancel: () => void; // Função para cancelar a operação.
-  isEditMode: boolean; // Indica se o formulário está no modo de edição.
+  empresas: { id: number; razaoSocial: string }[]; // Lista de empresas disponíveis.
+  empresaId?: string | string[]; // ID da empresa, se disponível.
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // Função para lidar com alterações nos campos do formulário.
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Função para lidar com o envio do formulário.
 }
 
+// Componente funcional que renderiza o formulário de cadastro de licença.
 export default function LicencaForm({
   form,
-  onChange,
-  onSubmit,
-  onCancel,
-  isEditMode,
+  empresas,
+  empresaId,
+  handleChange,
+  handleSubmit,
 }: LicencaFormProps) {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit}>
+      {/* Campo para selecionar a empresa, exibido apenas se `empresaId` não estiver na URL */}
+      {!empresaId && (
+        <div className="mb-3">
+          <label htmlFor="empresaId" className="form-label">
+            Empresa
+          </label>
+          <select
+            id="empresaId"
+            name="empresaId"
+            className="form-control"
+            value={form.empresaId} // Valor atual do campo.
+            onChange={handleChange} // Atualiza o estado ao alterar o campo.
+            required // Campo obrigatório.
+          >
+            <option value="">Selecione uma empresa</option>
+            {empresas.map((empresa) => (
+              <option key={empresa.id} value={empresa.id}>
+                {empresa.razaoSocial}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       {/* Campo para o número da licença */}
-      <div className="mb-4">
-        <label className="block text-gray-700">Número</label>
+      <div className="mb-3">
+        <label htmlFor="numero" className="form-label">
+          Número
+        </label>
         <input
           type="text"
+          id="numero"
           name="numero"
-          value={form.numero}
-          onChange={onChange}
-          className="w-full px-4 py-2 border rounded"
+          className="form-control"
+          value={form.numero} // Valor atual do campo.
+          onChange={handleChange} // Atualiza o estado ao alterar o campo.
+          required // Campo obrigatório.
         />
       </div>
 
       {/* Campo para o órgão ambiental */}
-      <div className="mb-4">
-        <label className="block text-gray-700">Órgão Ambiental</label>
+      <div className="mb-3">
+        <label htmlFor="orgaoAmbiental" className="form-label">
+          Órgão Ambiental
+        </label>
         <input
           type="text"
+          id="orgaoAmbiental"
           name="orgaoAmbiental"
-          value={form.orgaoAmbiental}
-          onChange={onChange}
-          className="w-full px-4 py-2 border rounded"
+          className="form-control"
+          value={form.orgaoAmbiental} // Valor atual do campo.
+          onChange={handleChange} // Atualiza o estado ao alterar o campo.
+          required // Campo obrigatório.
         />
       </div>
 
       {/* Campo para a data de emissão */}
-      <div className="mb-4">
-        <label className="block text-gray-700">Emissão</label>
+      <div className="mb-3">
+        <label htmlFor="emissao" className="form-label">
+          Data de Emissão
+        </label>
         <input
           type="date"
+          id="emissao"
           name="emissao"
-          value={form.emissao}
-          onChange={onChange}
-          className="w-full px-4 py-2 border rounded"
+          className="form-control"
+          value={form.emissao} // Valor atual do campo.
+          onChange={handleChange} // Atualiza o estado ao alterar o campo.
+          required // Campo obrigatório.
         />
       </div>
 
       {/* Campo para a data de validade */}
-      <div className="mb-4">
-        <label className="block text-gray-700">Validade</label>
+      <div className="mb-3">
+        <label htmlFor="validade" className="form-label">
+          Data de Validade
+        </label>
         <input
           type="date"
+          id="validade"
           name="validade"
-          value={form.validade}
-          onChange={onChange}
-          className="w-full px-4 py-2 border rounded"
+          className="form-control"
+          value={form.validade} // Valor atual do campo.
+          onChange={handleChange} // Atualiza o estado ao alterar o campo.
+          required // Campo obrigatório.
         />
       </div>
 
-      {/* Botões de ação */}
-      <button type="submit" className="btn btn-primary">
-        {isEditMode ? "Atualizar" : "Salvar"}
-        {/* Exibe "Atualizar" no modo de edição e "Salvar" no modo de criação. */}
-      </button>
-      <button type="button" className="btn btn-secondary ml-2" onClick={onCancel}>
-        Voltar
-        {/* Botão para cancelar a operação e voltar. */}
+      {/* Botão para enviar o formulário */}
+      <button type="submit" className="btn btn-primary w-100">
+        Salvar Licença
       </button>
     </form>
   );

@@ -1,44 +1,55 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { saveLicenca } from "../../services/licencaService";
+import { useState, useEffect } from "react";
 
-export function useCadastroLicenca(empresaIdString: string | undefined) {
-  const [form, setForm] = useState({
+interface Empresa {
+  id: number;
+  razaoSocial: string;
+}
+
+interface FormState {
+  empresaId: string;
+  numero: string;
+  orgaoAmbiental: string;
+  emissao: string;
+  validade: string;
+}
+
+export function useCadastroLicenca(empresaId?: string | string[]) {
+  const [empresas, setEmpresas] = useState<Empresa[]>([]); // Estado para armazenar as empresas.
+  const [form, setForm] = useState<FormState>({
+    empresaId: Array.isArray(empresaId) ? empresaId[0] : empresaId || "", // Define o `empresaId` inicial, se disponível.
     numero: "",
     orgaoAmbiental: "",
     emissao: "",
     validade: "",
-    empresaId: empresaIdString || "",
   });
+  const [loadingEmpresas, setLoadingEmpresas] = useState(true); // Estado para controlar o carregamento das empresas.
 
-  const router = useRouter();
-
-  // Função para salvar a licença
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // Validação dos campos obrigatórios
-    if (!form.numero || !form.orgaoAmbiental || !form.emissao || !form.validade || !form.empresaId) {
-      alert("Por favor, preencha todos os campos antes de salvar.");
-      return;
+  // Busca as empresas disponíveis ao montar o componente.
+  useEffect(() => {
+    async function fetchEmpresas() {
+      try {
+        const res = await fetch("/api/empresa");
+        if (!res.ok) {
+          throw new Error("Erro ao buscar empresas.");
+        }
+        const data = await res.json();
+        setEmpresas(data); // Atualiza o estado com a lista de empresas.
+        setLoadingEmpresas(false);
+      } catch (error) {
+        console.error("Erro ao buscar empresas:", error);
+        setLoadingEmpresas(false);
+      }
     }
 
-    const confirmSave = window.confirm("Tem certeza de que deseja salvar esta nova licença?");
-    if (!confirmSave) return;
+    fetchEmpresas();
+  }, []);
 
-    try {
-      await saveLicenca(form); // Salva a licença
-      router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`); // Redireciona para os detalhes da empresa
-    } catch (error) {
-      console.error("Erro ao salvar licença:", error);
-      alert("Erro ao salvar licença. Tente novamente.");
-    }
+  // Atualiza os valores do formulário ao alterar os campos.
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
-  // Função para cancelar e redirecionar para os detalhes da empresa
-  const handleCancel = () => {
-    router.push(`/empresa/detalhesEmpresa?id=${empresaIdString}`);
-  };
-
-  return { form, setForm, handleSubmit, handleCancel };
+  // Retorna os dados e funções gerenciados pelo hook.
+  return { empresas, form, loadingEmpresas, handleChange, setForm };
 }
