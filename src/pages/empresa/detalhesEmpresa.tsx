@@ -4,8 +4,6 @@
 import { useDetalhesEmpresa } from "../../hooks/useDetalhesEmpresa";
 // Hook customizado que encapsula a lógica de busca, exclusão e estado da empresa.
 
-import ListLicenca from "../../componentes/selectListLicenca";
-// Componente para exibir a lista de licenças associadas à empresa.
 
 import EmpresaDetalhes from "../../componentes/DetalhesEmpresa";
 // Componente para exibir os detalhes da empresa, incluindo a funcionalidade de exclusão.
@@ -26,11 +24,8 @@ export default function DetalhesEmpresa() {
       <EmpresaDetalhes empresa={empresa} onExcluir={excluirEmpresaHandler} />
       {/* Componente que exibe os detalhes da empresa e permite a exclusão. */}
 
-      {/* Lista de Licenças */}
-      <div>
-        <ListLicenca empresaId={empresa.id} />
-        {/* Componente que exibe a lista de licenças associadas à empresa. */}
-      </div>
+     
+     
     </>
   );
 }
