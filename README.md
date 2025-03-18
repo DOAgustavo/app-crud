@@ -32,7 +32,7 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 1. Abra o terminal ou prompt de comando.
 2. Clone o repositório do projeto:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/DOAgustavo/app-crud.git
    ```
 3. Acesse a pasta do projeto:
    ```bash
