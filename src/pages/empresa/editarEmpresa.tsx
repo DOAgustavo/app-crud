@@ -4,7 +4,7 @@
 import { useEmpresa } from "../hooks/useEditarEmpresa";
 // Hook customizado que encapsula a lógica de busca, atualização e estado da empresa.
 
-import EmpresaForm from "../../componentes/EmpresaForm";
+import EmpresaForm from "../../componentes/EmpresaEditForm";
 // Componente reutilizável para exibir e editar os dados da empresa.
 
 export default function EditarEmpresa() {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+import React from "react";
+import { useRouter } from "next/router";
 // Importa o React e o hook `useRouter` do Next.js para manipular a navegação.
 
 type Empresa = {
@@ -24,22 +24,27 @@ export default function EmpresaList({ empresas, onClick }: EmpresaListProps) {
   };
 
   return (
-    <div className="d-flex justify-content-center">
-      {/* Centraliza a lista horizontalmente na página. */}
-      <ul className="list-group" style={{ width: '80%' }}>
-        {/* Define uma largura fixa para a lista. */}
+    <div className="container mt-4">
+      {/* Contêiner principal com margem superior */}
+      <h2 className="text-center mb-4">Lista de Empresas</h2>
+      {/* Título centralizado */}
+
+      <ul className="list-group">
+        {/* Lista de empresas */}
         {empresas.map((empresa) => (
-          <button
+          <li
             key={empresa.id}
-            className="list-group-item list-group-item-action mb-2"
-            style={{ borderRadius: '10px' }}
+            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-2"
+            style={{ borderRadius: "10px" }}
             // Estiliza os itens da lista com bordas arredondadas e espaçamento inferior.
             onClick={() => onClick(empresa.id)}
             // Chama a função `onClick` ao clicar no item da lista.
           >
-            {empresa.razaoSocial}
-            {/* Exibe o nome da empresa no botão. */}
-          </button>
+            <span>{empresa.razaoSocial}</span>
+            {/* Exibe o nome da empresa */}
+            
+            {/* Botão para acessar os detalhes da empresa */}
+          </li>
         ))}
       </ul>
     </div>

@@ -20,6 +20,7 @@ export default function CadastroEmpresa() {
   // Função para renderizar os campos do formulário.
   const renderInput = (label: string, name: string, required = true) => (
     <div className="col-12 col-md-6">
+      {/* Em telas pequenas, ocupa toda a largura (col-12). Em telas médias, divide em 2 colunas (col-md-6). */}
       <label htmlFor={name} className="form-label">
         {label}
       </label>
@@ -45,11 +46,11 @@ export default function CadastroEmpresa() {
   );
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100">
+    <div className="d-flex align-items-center justify-content-center min-vh-100">
       {/* Centraliza o formulário vertical e horizontalmente na tela. */}
       <div
-        className="container-fluid p-4 bg-white shadow-md rounded"
-        style={{ maxWidth: "500px" }}
+        className="container p-4 bg-white shadow-md rounded"
+        style={{ maxWidth: "800px" }}
       >
         {/* Define o contêiner do formulário com estilização básica. */}
         <h1 className="text-center mb-4">Nova Empresa</h1>
@@ -70,14 +71,14 @@ export default function CadastroEmpresa() {
           {renderInput("Complemento", "complemento", false)}
           {/* Renderiza os campos do formulário usando a função `renderInput`. */}
           <div className="col-12">
-            <button className="btn btn-primary w-100" type="submit">
+            <button className="btn btn-primary w-15" type="submit">
               Salvar
             </button>
             {/* Botão para enviar o formulário. */}
           </div>
           <div className="col-12 mt-3">
             <Link href="/" legacyBehavior>
-              <a className="btn btn-secondary w-100 text-center">
+              <a className="btn btn-secondary w-15 text-center">
                 Voltar para a Página Principal
               </a>
             </Link>

@@ -4,7 +4,7 @@
 import { useDetalhesEmpresa } from "../hooks/useDetalhesEmpresa";
 // Hook customizado que encapsula a lógica de busca, exclusão e estado da empresa.
 
-import ListLicenca from "../../componentes/listLicenca";
+import ListLicenca from "../../componentes/selectListLicenca";
 // Componente para exibir a lista de licenças associadas à empresa.
 
 import EmpresaDetalhes from "../../componentes/DetalhesEmpresa";
