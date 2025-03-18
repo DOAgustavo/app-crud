@@ -3,46 +3,12 @@ import { useRouter } from "next/router";
 import { createEmpresa } from "../services/empresaService"; // Serviço responsável por criar uma empresa na API
 
 // Função para validar o CNPJ
+
 function validarCNPJ(cnpj: string): boolean {
-  // Remove caracteres não numéricos
+  // Remove caracteres não numéricos do CNPJ
   cnpj = cnpj.replace(/[^\d]+/g, "");
-
-  // Verifica se o CNPJ tem exatamente 14 dígitos
-  if (cnpj.length !== 14) return false;
-
-  // Verifica se todos os dígitos são iguais (ex.: 11111111111111 é inválido)
-  if (/^(\d)\1+$/.test(cnpj)) return false;
-
-  let tamanho = cnpj.length - 2;
-  let numeros = cnpj.substring(0, tamanho);
-  let digitos = cnpj.substring(tamanho);
-  let soma = 0;
-  let pos = tamanho - 7;
-
-  // Calcula o primeiro dígito verificador
-  for (let i = tamanho; i >= 1; i--) {
-    soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
-    if (pos < 2) pos = 9;
-  }
-
-  let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  if (resultado !== parseInt(digitos.charAt(0))) return false;
-
-  // Calcula o segundo dígito verificador
-  tamanho++;
-  numeros = cnpj.substring(0, tamanho);
-  soma = 0;
-  pos = tamanho - 7;
-
-  for (let i = tamanho; i >= 1; i--) {
-    soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
-    if (pos < 2) pos = 9;
-  }
-
-  resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
-  return resultado === parseInt(digitos.charAt(1));
+  return cnpj.length === 14; // Retorna true se o CNPJ tiver 14 dígitos
 }
-
 // Função para validar o CEP
 function validarCEP(cep: string): boolean {
   const regex = /^\d{5}-\d{3}$/; // Expressão regular para verificar o formato 00000-000
@@ -50,17 +16,7 @@ function validarCEP(cep: string): boolean {
 }
 
 // Função para formatar o CNPJ
-function formatarCNPJ(cnpj: string): string {
-  // Remove caracteres não numéricos do CNPJ
-  cnpj = cnpj.replace(/[^\d]+/g, "");
 
-  // Aplica a formatação ao CNPJ (ex.: 12.345.678/0001-95)
-  return cnpj
-    .replace(/^(\d{2})(\d)/, "$1.$2") // Adiciona o primeiro ponto
-    .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3") // Adiciona o segundo ponto
-    .replace(/\.(\d{3})(\d)/, ".$1/$2") // Adiciona a barra
-    .replace(/(\d{4})(\d)/, "$1-$2"); // Adiciona o traço
-}
 
 // Função para formatar o CEP
 function formatarCEP(cep: string): string {
@@ -92,10 +48,8 @@ export function useCadastroEmpresa() {
 
     let formattedValue = value;
 
-    // Aplica a formatação para CNPJ e CEP
-    if (name === "cnpj") {
-      formattedValue = formatarCNPJ(value);
-    } else if (name === "cep") {
+    // Aplica a formatação para   CEP
+     if (name === "cep") {
       formattedValue = formatarCEP(value);
     }
 
