@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {prisma} from '../../../../prisma/prisma'; // Certifique-se de que o Prisma está configurado corretamente
+import { prisma } from '../../../../prisma/prisma'; // Certifique-se de que o Prisma está configurado corretamente
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -27,12 +27,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: 'Erro ao criar licença' });
     }
   } else if (req.method === 'GET') {
+    const { empresaId } = req.query;
+
     try {
+      // Verifica se o `empresaId` foi fornecido
+      if (!empresaId) {
+        return res.status(400).json({ error: 'O parâmetro empresaId é obrigatório' });
+      }
+
+      // Busca as licenças filtradas pelo `empresaId`
       const licencas = await prisma.licenca.findMany({
+        where: {
+          empresaId: Number(empresaId), // Filtra pelo ID da empresa
+        },
         include: {
           empresa: true, // Inclui os dados da empresa relacionada
         },
       });
+
       res.status(200).json(licencas);
     } catch (error) {
       console.error('Erro ao buscar licenças:', error);
