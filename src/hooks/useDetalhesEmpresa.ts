@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { excluirEmpresa } from "../../services/empresaService";
+import { excluirEmpresa } from "../services/empresaService";
 
 // Interface que define a estrutura dos dados de uma empresa.
 interface Empresa {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { createEmpresa } from "../../services/empresaService"; // Serviço responsável por criar uma empresa na API
+import { createEmpresa } from "../services/empresaService"; // Serviço responsável por criar uma empresa na API
 
 // Função para validar o CNPJ
 function validarCNPJ(cnpj: string): boolean {

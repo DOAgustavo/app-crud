@@ -7,7 +7,7 @@ import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 // Importa os estilos do Bootstrap para estilização do formulário.
 
-import { useCadastroEmpresa } from "../hooks/useCadastroEmpresa";
+import { useCadastroEmpresa } from "../../hooks/useCadastroEmpresa";
 // Importa o hook customizado que encapsula a lógica de estado e manipulação do formulário.
 
 export default function CadastroEmpresa() {

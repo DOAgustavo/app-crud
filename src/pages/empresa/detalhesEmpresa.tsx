@@ -1,7 +1,7 @@
 "use client";
 // Indica que este componente será renderizado no lado do cliente (Next.js).
 
-import { useDetalhesEmpresa } from "../hooks/useDetalhesEmpresa";
+import { useDetalhesEmpresa } from "../../hooks/useDetalhesEmpresa";
 // Hook customizado que encapsula a lógica de busca, exclusão e estado da empresa.
 
 import ListLicenca from "../../componentes/selectListLicenca";

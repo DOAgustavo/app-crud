@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { fetchEmpresa, updateEmpresa } from "../../services/empresaService";
+import { fetchEmpresa, updateEmpresa } from "../services/empresaService";
 
 interface Empresa {
   id: number;

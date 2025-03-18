@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 // Importa o hook `useRouter` do Next.js para manipular a navegação.
 
-import { useLicencas } from "../../pages/hooks/useLicencas";
+import { useLicencas } from "../../hooks/useLicencas";
 // Importa o hook customizado `useLicencas` para gerenciar o carregamento e exclusão de licenças.
 
 import LicencaItem from "../../componentes/ListaLicencas";

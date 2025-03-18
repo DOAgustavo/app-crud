@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 // Importa o hook `useRouter` do Next.js para manipular a navegação.
 
-import { useCadastroLicenca } from "../../pages/hooks/useCadastroLicenca";
+import { useCadastroLicenca } from "../../hooks/useCadastroLicenca";
 // Importa o hook customizado `useCadastroLicenca` para gerenciar o estado do formulário e carregar as empresas.
 
 import LicencaForm from "../../componentes/cadastroLicenca";

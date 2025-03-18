@@ -1,7 +1,7 @@
 "use client";
 // Indica que este componente será renderizado no lado do cliente (Next.js).
 
-import { useEmpresa } from "../hooks/useEditarEmpresa";
+import { useEmpresa } from "../../hooks/useEditarEmpresa";
 // Hook customizado que encapsula a lógica de busca, atualização e estado da empresa.
 
 import EmpresaForm from "../../componentes/EmpresaEditForm";
