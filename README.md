@@ -4,6 +4,10 @@ Este projeto é um CRUD simples desenvolvido com **Next.js**, **MySQL** e **Pris
 
 ---
 
+## <img src="prints/home.png" alt="page home" width="400">
+
+---
+
 ## **Tecnologias Utilizadas**
 
 - **Next.js**: Framework React para desenvolvimento web.
@@ -215,21 +219,26 @@ O projeto inclui scripts para cadastrar empresas e licenças fictícias no banco
 1. **Home**:
    - Verifique se a lista de empresas é exibida.
    - Teste o botão para criar uma nova empresa.
-   <img src="prints/home.png" alt="page home" width="600">
-   <img src="prints/homeEmpresas.png" alt="page home com empresas cadastradas" width="600">
+   <img src="prints/home.png" alt="page home" width="400">
+   <img src="prints/homeEmpresas.png" alt="page home com empresas cadastradas" width="400">
 
 2. **Cadastro de Empresa**:
    - Preencha os campos obrigatórios (Razão Social, CNPJ, etc.).
    - Verifique se a lista de licenças ambientais aparece abaixo dos campos.
    - Teste o botão para adicionar uma nova licença.
-   <img src="prints/cadastroEmpresa.png" alt="page cadastro empresa" width="600">
+   <img src="prints/cadastroEmpresa.png" alt="page cadastro empresa" width="400">
 
 3. **Cadastro de Licenças**:
    - Preencha os campos obrigatórios (Empresa, Número, Órgão Ambiental, etc.).
    - Verifique se a licença é salva corretamente e aparece na lista.
-   <img src="prints/cadastroLicenca.png" alt="page cadastro Licenca" width="600">
+   <img src="prints/cadastroLicenca.png" alt="page cadastro Licenca" width="400">
 
+4. **Lista de Licenças**:
+   - Acesse a página de Lista de Licenças para visualizar todas as licenças cadastradas no sistema.
+   <img src="prints/ListaLicenca.png" alt="Lista de Licenca" width="400">
 
-   
+5. **Detalhes sobre Empresa**:
+   - Acesse a página de Detalhes sobre Empresa para visualizar informações detalhadas sobre uma empresa específica.
+   <img src="prints/detalhesEmpresa.png" alt="detalhes sobre a empresa" width="400">
 ---
 

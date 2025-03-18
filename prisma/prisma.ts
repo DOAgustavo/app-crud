@@ -14,4 +14,5 @@ export const prisma =
 // Cria uma nova instância do PrismaClient ou reutiliza uma instância existente em ambiente de desenvolvimento.
 
 if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
-// Em ambiente de desenvolvimento, armazena a instância do Prisma no objeto global para evitar recriações.
+// Em ambiente de desenvolvimento
+// filepath: c:\src\app-crud\prisma\prisma.ts

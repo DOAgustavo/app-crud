@@ -23,7 +23,7 @@ export default function AllListLicencas() {
   useEffect(() => {
     async function fetchLicencas() {
       try {
-        const response = await fetch("/api/licencas"); // Endpoint para buscar todas as licenças
+        const response = await fetch("/api/licenca?empresaId=1"); // Endpoint para buscar todas as licenças
         if (!response.ok) {
           throw new Error("Erro ao buscar licenças");
         }
@@ -42,7 +42,7 @@ export default function AllListLicencas() {
   // Função para excluir uma licença
   const excluirLicenca = async (id: number) => {
     try {
-      const response = await fetch(`/api/licencas/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/licenca/${id}`, { method: "DELETE" });
       if (!response.ok) {
         throw new Error("Erro ao excluir licença");
       }
