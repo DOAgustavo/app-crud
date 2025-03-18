@@ -1,100 +1,40 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-
-interface Licenca {
-  id: number;
-  numero: string;
-  orgaoAmbiental: string;
-  emissao: string;
-  validade: string;
-  empresa: {
-    id: number;
-    razaoSocial: string;
-  };
-}
+import { useLicencas } from "../../hooks/useAllLicencas"; // Hook personalizado para buscar e gerenciar licenças.
+import { useRouter } from "next/router"; // Hook do Next.js para manipular rotas e navegação.
+import LicencaItem from "../../componentes/AllListaLicenca"; // Componente para renderizar cada item de licença.
 
 export default function AllListLicencas() {
-  const [licencas, setLicencas] = useState<Licenca[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  // Hook personalizado que retorna as licenças, estado de carregamento, erros e função de exclusão.
+  const { licencas, loading, error, excluirLicenca } = useLicencas(1); // Passa o `empresaId` como argumento.
+  const router = useRouter(); // Instância do roteador para navegação.
 
-  // Função para buscar todas as licenças
-  useEffect(() => {
-    async function fetchLicencas() {
-      try {
-        const response = await fetch("/api/licenca?empresaId=1"); // Endpoint para buscar todas as licenças
-        if (!response.ok) {
-          throw new Error("Erro ao buscar licenças");
-        }
-        const data = await response.json();
-        setLicencas(data);
-      } catch (err) {
-        setError("Erro ao carregar licenças");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchLicencas();
-  }, []);
-
-  // Função para excluir uma licença
-  const excluirLicenca = async (id: number) => {
-    try {
-      const response = await fetch(`/api/licenca/${id}`, { method: "DELETE" });
-      if (!response.ok) {
-        throw new Error("Erro ao excluir licença");
-      }
-      setLicencas((prevLicencas) => prevLicencas.filter((licenca) => licenca.id !== id));
-    } catch (err) {
-      alert("Erro ao excluir licença");
-    }
-  };
-
+  // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados.
   if (loading) {
     return <p className="text-center">Carregando licenças...</p>;
   }
 
+  // Exibe uma mensagem de erro caso ocorra algum problema ao buscar os dados.
   if (error) {
     return <p className="text-center text-danger">{error}</p>;
   }
 
   return (
     <div className="container my-3 p-3 bg-white rounded shadow-sm" style={{ maxWidth: "800px" }}>
+      {/* Título da página */}
       <h1 className="text-center mb-4">Lista de Todas as Licenças</h1>
+
+      {/* Verifica se há licenças disponíveis */}
       {licencas.length === 0 ? (
-        <p className="text-center">Nenhuma licença encontrada.</p>
+        <p className="text-center">Nenhuma licença encontrada.</p> // Mensagem exibida se não houver licenças.
       ) : (
         <ul className="list-group">
+          {/* Mapeia as licenças e renderiza cada uma usando o componente LicencaItem */}
           {licencas.map((licenca) => (
-            <li
-              key={licenca.id}
-              className="list-group-item d-flex justify-content-between align-items-center mb-2"
-              style={{ borderRadius: "10px" }}
-            >
-              <div>
-                <p><strong>Número:</strong> {licenca.numero}</p>
-                <p><strong>Órgão Ambiental:</strong> {licenca.orgaoAmbiental}</p>
-                <p><strong>Emissão:</strong> {new Date(licenca.emissao).toLocaleDateString()}</p>
-                <p><strong>Validade:</strong> {new Date(licenca.validade).toLocaleDateString()}</p>
-                <p><strong>Empresa:</strong> {licenca.empresa.razaoSocial}</p>
-              </div>
-              <div className="d-flex gap-2">
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => router.push(`/licenca/editarLicenca?id=${licenca.id}`)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => excluirLicenca(licenca.id)}
-                >
-                  Excluir
-                </button>
-              </div>
-            </li>
+            <LicencaItem
+              key={licenca.id} // Define uma chave única para cada item.
+              licenca={licenca} // Passa os dados da licença como propriedade.
+              onEditar={(id) => router.push(`/licenca/editarLicenca?id=${id}`)} // Função para editar a licença.
+              onExcluir={excluirLicenca} // Função para excluir a licença.
+            />
           ))}
         </ul>
       )}
