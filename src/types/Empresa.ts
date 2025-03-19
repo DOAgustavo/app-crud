@@ -1,9 +1,13 @@
 /**
- * Define o tipo Empresa, que representa a estrutura de dados de uma empresa no sistema.
- * Esse tipo é usado para garantir consistência e tipagem em todo o projeto,
- * especialmente ao lidar com dados relacionados a empresas.
+ * Representa uma empresa no sistema.
  */
-export type Empresa = {
-    id: number; // Identificador único da empresa
-    razaoSocial: string; // Nome oficial da empresa
-  };
+export interface Empresa {
+  id: number; // Identificador único da empresa
+  razaoSocial: string; // Nome oficial da empresa
+  cnpj: string; // Cadastro Nacional da Pessoa Jurídica
+  cep: string; // Código de Endereçamento Postal
+  cidade: string; // Cidade onde a empresa está localizada
+  estado: string; // Estado onde a empresa está localizada
+  bairro: string; // Bairro onde a empresa está localizada
+  complemento: string; // Complemento do endereço
+}

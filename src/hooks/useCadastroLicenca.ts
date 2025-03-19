@@ -1,17 +1,7 @@
 import { useState, useEffect } from "react";
 
-interface Empresa {
-  id: number;
-  razaoSocial: string;
-}
+import { Empresa, FormState } from "../types/Licenca"; // Importa as interfaces
 
-interface FormState {
-  empresaId: string;
-  numero: string;
-  orgaoAmbiental: string;
-  emissao: string;
-  validade: string;
-}
 
 export function useCadastroLicenca(empresaId?: string | string[]) {
   const [empresas, setEmpresas] = useState<Empresa[]>([]); // Estado para armazenar as empresas.

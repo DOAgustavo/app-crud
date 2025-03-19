@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react"; // Importa hooks do React para gerenciar estado e efeitos colaterais.
+import { Empresa, Licenca } from "../types/Licenca"; // Importa as interfaces
 
-interface Licenca {
-  id: number; // ID único da licença.
-  numero: string; // Número da licença.
-  orgaoAmbiental: string; // Órgão ambiental responsável.
-  emissao: string; // Data de emissão da licença.
-  validade: string; // Data de validade da licença.
-  empresa: {
-    id: number; // ID da empresa associada.
-    razaoSocial: string; // Razão social da empresa.
-  };
-}
 
 export function useLicencas(empresaId?: number) {
   const [licencas, setLicencas] = useState<Licenca[]>([]); // Estado para armazenar as licenças.

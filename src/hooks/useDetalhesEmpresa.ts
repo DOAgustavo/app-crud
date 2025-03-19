@@ -1,18 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { excluirEmpresa } from "../services/empresaService";
-
-// Interface que define a estrutura dos dados de uma empresa.
-interface Empresa {
-  id: number;
-  razaoSocial: string;
-  cnpj: string;
-  cep: string;
-  cidade: string;
-  estado: string;
-  bairro: string;
-  complemento: string;
-}
+import { Empresa } from "../types/Empresa";
 
 export function useDetalhesEmpresa() {
   // Estado para armazenar os dados da empresa.
