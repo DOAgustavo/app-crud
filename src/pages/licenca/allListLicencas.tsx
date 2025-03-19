@@ -4,7 +4,7 @@ import LicencaItem from "../../componentes/AllListaLicenca"; // Componente para 
 
 export default function AllListLicencas() {
   // Hook personalizado que retorna as licenças, estado de carregamento, erros e função de exclusão.
-  const { licencas, loading, error, excluirLicenca } = useLicencas(1); // Passa o `empresaId` como argumento.
+  const { licencas, loading, error, excluirLicenca } = useLicencas(); // Passa o `empresaId` como argumento.
   const router = useRouter(); // Instância do roteador para navegação.
 
   // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados.

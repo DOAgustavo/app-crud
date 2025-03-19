@@ -34,3 +34,18 @@ export async function fetchEmpresas() {
     return [];
   }
 }
+
+import { Empresa } from "../types/Empresa";
+
+/**
+ * Busca os dados de uma empresa pelo ID.
+ * @param id - ID da empresa a ser buscada.
+ * @returns Dados da empresa.
+ */
+export const fetchEmpresa = async (id: string): Promise<Empresa> => {
+  const response = await fetch(`/api/empresa/${id}`);
+  if (!response.ok) {
+    throw new Error("Erro ao buscar empresa");
+  }
+  return response.json();
+};

@@ -109,3 +109,4 @@ export async function getEmpresaById(id: string) {
   const response = await axios.get(`/api/empresa/${id}`);
   return response.data; // Certifique-se de que a API retorna um objeto com a propriedade `razaoSocial`
 }
+

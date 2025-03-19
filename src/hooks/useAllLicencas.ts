@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react"; // Importa hooks do React para gerenciar estado e efeitos colaterais.
-import { Empresa, Licenca } from "../types/Licenca"; // Importa as interfaces
-
+import { useState, useEffect } from "react";
+import { Licenca } from "../types/Licenca";
 
 export function useLicencas(empresaId?: number) {
   const [licencas, setLicencas] = useState<Licenca[]>([]); // Estado para armazenar as licenças.
   const [loading, setLoading] = useState(true); // Estado para controlar o carregamento.
   const [error, setError] = useState<string | null>(null); // Estado para armazenar mensagens de erro.
 
-  // Função para buscar licenças
   useEffect(() => {
     async function fetchLicencas() {
       try {
-        // Faz uma requisição GET para buscar as licenças, com filtro opcional por empresaId.
-        const response = await fetch(`/api/licenca${empresaId ? `?empresaId=${empresaId}` : ""}`);
+        // Define o endpoint com base no parâmetro empresaId
+        const endpoint = empresaId ? `/api/licenca/all?empresaId=${empresaId}` : "/api/licenca/all";
+        const response = await fetch(endpoint); // Faz a requisição para a API
+
         if (!response.ok) {
           throw new Error("Erro ao buscar licenças"); // Lança erro se a resposta não for bem-sucedida.
         }
+
         const data = await response.json(); // Converte a resposta para JSON.
         setLicencas(data); // Atualiza o estado com as licenças carregadas.
       } catch (err) {
@@ -31,18 +32,16 @@ export function useLicencas(empresaId?: number) {
   // Função para excluir uma licença
   const excluirLicenca = async (id: number) => {
     try {
-      // Faz uma requisição DELETE para excluir a licença pelo ID.
-      const response = await fetch(`/api/licenca/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/licenca/${id}`, { method: "DELETE" }); // Faz a requisição DELETE para a API
       if (!response.ok) {
         throw new Error("Erro ao excluir licença"); // Lança erro se a exclusão falhar.
       }
-      // Remove a licença excluída do estado local.
+      // Remove a licença excluída do estado local
       setLicencas((prevLicencas) => prevLicencas.filter((licenca) => licenca.id !== id));
     } catch (err) {
       alert("Erro ao excluir licença"); // Exibe alerta em caso de erro.
     }
   };
 
-  // Retorna os dados e funções para o componente que usar o hook.
-  return { licencas, loading, error, excluirLicenca };
+  return { licencas, loading, error, excluirLicenca }; // Retorna os estados e a função excluirLicenca.
 }
