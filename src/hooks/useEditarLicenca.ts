@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-
+import { LicencaForm } from "../types/Licenca";
 // Define a interface para o formulário de licença.
-interface LicencaForm {
-  numero: string; // Número da licença.
-  orgaoAmbiental: string; // Órgão ambiental responsável.
-  emissao: string; // Data de emissão da licença.
-  validade: string; // Data de validade da licença.
-}
+
 
 // Define o hook customizado `useEditarLicenca`.
 export function useEditarLicenca(id: string | string[] | undefined) {

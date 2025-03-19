@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
-
+import { Licenca } from "../types/Licenca";
 // Define a interface para o tipo `Licenca`, que representa os dados de uma licença.
-interface Licenca {
-  id: number;
-  numero: string;
-  orgaoAmbiental: string;
-  emissao: string;
-  validade: string;
-}
 
 // Define o hook customizado `useLicencas`, que gerencia o carregamento e exclusão de licenças.
 export function useLicencas(empresaId: string | string[] | undefined) {

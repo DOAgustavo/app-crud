@@ -28,3 +28,12 @@ export interface Empresa {
     validade: string; // Data de validade da licença
     empresa: Empresa; // Dados da empresa associada à licença
   }
+
+  // Define a interface para o formulário de licença.
+export interface LicencaForm {
+    numero: string; // Número da licença.
+    orgaoAmbiental: string; // Órgão ambiental responsável.
+    emissao: string; // Data de emissão da licença.
+    validade: string; // Data de validade da licença.
+  }
+  
