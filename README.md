@@ -4,7 +4,7 @@ Este projeto é um CRUD simples desenvolvido com **Next.js**, **MySQL** e **Pris
 
 ---
 
-## <img src="prints/home.png" alt="page home" width="600">
+## <img src="prints/home.png" alt="page home" width="800">
 
 ---
 
