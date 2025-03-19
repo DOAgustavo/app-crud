@@ -1,14 +1,5 @@
-interface Licenca {
-    id: number;
-    numero: string;
-    orgaoAmbiental: string;
-    emissao: string;
-    validade: string;
-    empresa: {
-      id: number;
-      razaoSocial: string;
-    };
-  }
+import { Licenca } from "../types/Licenca";
+
   
   interface LicencaItemProps {
     licenca: Licenca;

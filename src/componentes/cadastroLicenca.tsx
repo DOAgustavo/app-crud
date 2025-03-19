@@ -1,12 +1,7 @@
+import {FormState } from '../types/Licenca';
 // Define as propriedades esperadas pelo componente `LicencaForm`.
 interface LicencaFormProps {
-  form: {
-    empresaId: string; // ID da empresa associada à licença.
-    numero: string; // Número da licença.
-    orgaoAmbiental: string; // Órgão ambiental responsável.
-    emissao: string; // Data de emissão da licença.
-    validade: string; // Data de validade da licença.
-  };
+  form: FormState;
   empresas: { id: number; razaoSocial: string }[]; // Lista de empresas disponíveis.
   empresaId?: string | string[]; // ID da empresa, se disponível.
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // Função para lidar com alterações nos campos do formulário.
