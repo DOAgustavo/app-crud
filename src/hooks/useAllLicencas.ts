@@ -1,3 +1,11 @@
+/**
+ * Este arquivo define o hook `useLicencas`, responsável por gerenciar o estado e os efeitos
+ * relacionados à busca e exclusão de licenças no sistema.
+ * 
+ * O hook realiza chamadas à API para buscar todas as licenças ou filtrar por uma empresa específica,
+ * além de permitir a exclusão de licenças. Ele também gerencia os estados de carregamento e erro.
+ */
+
 import { useState, useEffect } from "react";
 import { Licenca } from "../types/Licenca";
 

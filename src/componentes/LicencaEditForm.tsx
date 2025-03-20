@@ -1,17 +1,13 @@
-// Define as propriedades esperadas pelo componente `LicencaEditForm`.
+import { LicencaForm } from '../types/Licenca'; // Importa a interface LicencaForm do arquivo Licenca.ts
+
 interface LicencaFormProps {
-  form: {
-    numero: string; // Número da licença.
-    orgaoAmbiental: string; // Órgão ambiental responsável.
-    emissao: string; // Data de emissão da licença.
-    validade: string; // Data de validade da licença.
-  };
+  form: LicencaForm; // Define o tipo correto para o formulário com base na interface LicencaForm
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Função para lidar com alterações nos campos do formulário.
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Função para lidar com o envio do formulário.
 }
 
 // Componente funcional que renderiza o formulário de edição de licença.
-export default function LicencaForm({ form, handleChange, onSubmit }: LicencaFormProps) {
+export default function LicencaEditForm({ form, handleChange, onSubmit }: LicencaFormProps) {
   return (
     <form onSubmit={onSubmit}>
       {/* Campo para o número da licença */}

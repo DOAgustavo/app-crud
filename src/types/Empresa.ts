@@ -1,13 +1,19 @@
 /**
+ * Este arquivo define a interface `Empresa`, que representa a estrutura de dados de uma empresa no sistema.
+ * 
+ * A interface é usada para tipar objetos relacionados a empresas, garantindo consistência e segurança
+ * no uso de dados em diferentes partes do sistema, como componentes, hooks e serviços.
+ 
+/**
  * Representa uma empresa no sistema.
  */
 export interface Empresa {
-  id: number; // Identificador único da empresa
-  razaoSocial: string; // Nome oficial da empresa
-  cnpj: string; // Cadastro Nacional da Pessoa Jurídica
-  cep: string; // Código de Endereçamento Postal
-  cidade: string; // Cidade onde a empresa está localizada
-  estado: string; // Estado onde a empresa está localizada
-  bairro: string; // Bairro onde a empresa está localizada
-  complemento: string; // Complemento do endereço
+  id: number; 
+  razaoSocial: string; 
+  cnpj: string; 
+  cep: string; 
+  cidade: string;
+  estado: string; 
+  bairro: string; 
+  complemento: string; 
 }

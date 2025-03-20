@@ -1,13 +1,8 @@
 import { useRouter } from "next/router";
+import { Licenca } from "../types/Licenca";
 // Importa o hook `useRouter` do Next.js para manipular a navegação.
 
-interface Licenca {
-  id: number;
-  numero: string;
-  orgaoAmbiental: string;
-  emissao: string;
-  validade: string;
-}
+
 // Define a interface `Licenca`, que representa os dados de uma licença.
 
 interface LicencaItemProps {

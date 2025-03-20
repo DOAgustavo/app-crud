@@ -1,4 +1,12 @@
 /**
+ * A pasta `services` é responsável por centralizar a lógica de comunicação com a API.
+ * 
+ * Aqui são definidas funções reutilizáveis que encapsulam chamadas HTTP para endpoints específicos,
+ * como criação, exclusão, atualização e busca de dados. Isso promove a separação de responsabilidades,
+ * deixando os componentes e hooks focados apenas no gerenciamento de estado e lógica de interface.
+ 
+
+/**
  * Função responsável por criar uma nova empresa na API.
  * 
  * Essa função faz uma requisição POST para o endpoint `/api/empresa` com os dados
@@ -25,9 +33,6 @@ export const createEmpresa = async (form: any) => {
 
   return response.json(); // Retorna os dados da empresa criada
 };
-
-
-
 
 
 

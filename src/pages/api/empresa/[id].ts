@@ -1,3 +1,12 @@
+/**
+ * Este arquivo define a API para manipulação de uma empresa específica.
+ * 
+ * Ele lida com requisições HTTP para a rota `/api/empresa/[id]`, permitindo:
+ * - **GET**: Obter os detalhes de uma empresa pelo ID.
+ * - **PUT**: Atualizar os dados de uma empresa pelo ID.
+ * - **DELETE**: Excluir uma empresa pelo ID.
+ */
+
 import { NextApiRequest, NextApiResponse } from 'next';
 // Importa os tipos do Next.js para requisições e respostas HTTP.
 
